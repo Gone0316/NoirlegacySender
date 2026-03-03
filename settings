@@ -20,8 +20,7 @@ const smtp = [
     "username": "miguel@pacificwestsound.com",
     "password": "ChangeMe!",
     "from_email": "e.drive@pacificwestsound.com",
-    "user": "nbaq",
-    "tested": "2026-02-13T13:29:38.058Z"
+   
   },
   {
     "host": "smtp.gmail.com",
@@ -30,8 +29,7 @@ const smtp = [
     "username": "Rtime458@gmail.com",
     "password": "kupg ctae vpkg eysk",
     "from_email": "Rtime458@gmail.com",
-    "user": "ajwire",
-    "tested": "2026-02-13T13:29:38.830Z"
+  
   },
 ];
 
@@ -39,7 +37,7 @@ const smtp = [
  * MAIN SETUP: Delivery & Content
  */
 const setup = {
-  key: "kk",
+  key: "key",
   MultipleSmtp: "ROTATE", // ROTATE or QUEUE
   mail_priority: "HIGH",
   sleep_time: 3,
