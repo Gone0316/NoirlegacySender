@@ -1,60 +1,67 @@
-DONT FORGET TO SET YOUR TIMEZONE ON SETTING
-======= USE THIS FUNCTION ON LETTER AND ATTACHMENT FILE ==========
-<%= NAME %>
-<%= COMPANYNAME %>
-<%= EMAIL %>
-<%= LINK %>
-<%= DOMAIN %>
-<%= RANDOMIP %>
-<%= RANDOMCOUNTRY %>
-<%= DATE %>
-<%= TIME %>
-<%= RANDSTRING1 %>
-<%- LETTERTOIMAGE %>
-<%- QRCODE %>
-<%- LOGO %>
-<%- MYLOGO %>
-<%= RANDOMNAME %>
-<%= DATETOMORROW %>
-<%= RANDUM1 %>
-<%= RANDUM2 %>
-<%= RANDUM3 %>
-<%= RANDUM4 %>
-<%= RANDUM5 %>
-<%= YOUR_RANDOM_STRING %> // THIS FUNCTION CAN EDIT BY YOURSELF IN SETTINGS, IF U NOT UNDERSTAND PLS CONTACT US
-===============================================================
-=================== USE THIS FUNCTION SETTINGS FILE ===========
-<RANDSTRING>
-<COMPANYNAME>
-<DOMAIN>
-<NAME>
-<RANDNUM1>
-<RANDNUM2>
-<RANDNUM3>
-<RANDNUM4>
-<RANDNUM5>
-<RANDNUM1>
-<RANDOMNAME>
-<CAPITAL_RANDSTRING1>
-<CAPITAL_RANDSTRING2>
-<CAPITAL_RANDSTRING3>
-<CAPITAL_RANDSTRING4>
-<CAPITAL_RANDSTRING5>
-<LOWER_RANDSTRING1>
-<LOWER_RANDSTRING2>
-<LOWER_RANDSTRING3>
-<LOWER_RANDSTRING4>
-<LOWER_RANDSTRING5>
-<RANDSTRING1>
-<RANDSTRING2>
-<RANDSTRING3>
-<RANDSTRING4>
-<RANDSTRING5>
-<RANDOMCITY>
-<RANDOMCOUNTRY>
-<TIME>
-<DATETOMORROW>
-<AUTOFROMMAIL> // AUTOMATIC SET FROM MAIL FROM USERNAME SMTP
-======================================================================================================
+================================================================================
+                    NO1R LEG4CY - FUNCTION SHORTCODES LIST
+================================================================================
 
-NB: IF YOU HAVE A PROBLEM OR YOU DONT UNDERSTAND YOU CAN CONTACT US
+[ 1. FOR LETTER & ATTACHMENT FILES (.html) ]
+Use these inside your HTML templates with the <%= %> or <%- %> syntax.
+
+-- Basic Info --
+<%= NAME %>             : Recipient's name (auto-extracted from email)
+<%= COMPANYNAME %>      : Company name (extracted from domain)
+<%= EMAIL %>            : Recipient's full email address
+<%= DOMAIN %>           : Recipient's email domain
+<%= RANDOMIP %>         : Random IPv4 address
+<%= RANDOMNAME %>       : Random full name
+<%= RANDOMCITY %>       : Random city name
+<%= RANDOMCOUNTRY %>    : Random country name
+
+-- Date & Time --
+<%= DATE %>             : Today's date (formatted by settings)
+<%= TIME %>             : Current time (formatted by settings)
+<%= DATETOMORROW %>     : Tomorrow's date
+
+-- Random Strings & Numbers --
+<%= RANDSTRING1 %>      : Custom random string 1 from settings
+<%= RANDUM1 %>          : Random 1-digit number
+<%= RANDUM2 %>          : Random 2-digit number
+<%= RANDUM3 %>          : Random 3-digit number
+<%= RANDUM4 %>          : Random 4-digit number
+<%= RANDUM5 %>          : Random 5-digit number
+<%= RANDUM10 %>         : Random 10-digit number
+
+-- Special Media Functions (Use <%- for HTML rendering) --
+<%- LETTERTOIMAGE %>    : Displays the screenshot of your letter (Must be ON)
+<%- QRCODE %>           : Displays the generated QR Code
+<%- LOGO %>             : Displays the Auto-Grabbed Logo (Target's Brand)
+<%- MYLOGO %>           : Displays your custom logo from settings
+
+--------------------------------------------------------------------------------
+
+[ 2. FOR SETTINGS FILE (settings.js) ]
+Use these inside quotes (e.g., in "mail_subject" or "from_name") using < > syntax.
+
+-- Personalization --
+<NAME>                  : Recipient's Name
+<EMAIL>                 : Recipient's Email
+<COMPANYNAME>           : Target Company Name
+<DOMAIN>                : Target Domain
+
+-- Random Generators --
+<RANDNUM1> to <RANDNUM10> : Random numbers (1-10 length)
+<RANDSTRING1> to <5>      : Random letters
+<CAPITAL_RANDSTRING1>     : Random UPPERCASE letters
+<LOWER_RANDSTRING1>       : Random lowercase letters
+<RANDOMNAME>              : Random Full Name
+<RANDOMCITY>              : Random City
+<RANDOMCOUNTRY>           : Random Country
+
+-- System --
+<DATE>                  : Today's Date
+<TIME>                  : Current Time
+<DATETOMORROW>          : Tomorrow's Date
+<AUTOFROMMAIL>          : Automatically use SMTP username as sender email
+
+================================================================================
+NB: If you encounter an error "RANDUM is not defined", make sure your 
+settings.js includes the alias for both RANDUM and RANDNUM.
+================================================================================
