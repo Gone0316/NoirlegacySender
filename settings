@@ -28,7 +28,7 @@ const graph_api = {
  * The main control panel that dictates sending behavior, masking, and speed.
  */
 const setup = {
-  key: "$2y$10$oniEBbU67syJ5oVGJT2RseZvL/rCQaZmSx61woYGNx1IQvXMf1632", // Your unique encrypted license key for system access.
+  key: "key", // Your unique encrypted license key for system access.
   MultipleSmtp: "ROTATE", // 'ROTATE' cycles through the SMTP list; 'SINGLE' uses only the first entry.
   mail_priority: "HIGH", // Sets the 'Importance' header of the email to high.
   sleep_time: 3, // Delay in seconds between each email to evade rate-limit detection.
