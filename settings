@@ -93,13 +93,11 @@ const setup = {
   letter: "letter.html",  // Default letter if multi is OFF
   multi_letters: [
     "letter_invoice_A.html",
-    "letter_receipt_B.html",
-    "letter_notification_C.html"
   ],
   use_multiple_images: true, 
   multi_images: [
-    "template_1.html", 
-    "template_2.html"
+    "letter1.html", 
+  
   ],
 
   // --- Dynamic Identity Shuffling ---
