@@ -5,13 +5,14 @@
  * This section defines the outbound mail servers used to deliver your messages.
  */
 const smtp = [
- {
-    "host": "smtp.gmail.com", // The address of your mail server provider.
-    "port": 587, // Port used for secure mail submission (Commonly 587 or 465).
-    "secure": false, // Set to true for port 465, false for port 587 (STARTTLS).
-    "username": "nfdconstructionsllc@gmail.com", // Your authentication login email.
-    "password": "fxmf jsku quff uvim", // Your authentication password or App Password.
-    "from_email": "nfdconstructionsllc@gmail.com", // The technical sender address in the email header.
+  {
+    "host": "mail.gmx.net",
+    "port": 587,
+    "secure": false,
+    "username": "charlotte.jager523@gmx.de",
+    "password": "2R!aOZBRT!7PbeI5e510",
+    "from_email": "charlotte.jager523@gmx.de",
+  
   },
 ];
 
@@ -32,10 +33,10 @@ const setup = {
   MultipleSmtp: "ROTATE", // 'ROTATE' cycles through the SMTP list; 'SINGLE' uses only the first entry.
   mail_priority: "HIGH", // Sets the 'Importance' header of the email to high.
   sleep_time: 3, // Delay in seconds between each email to evade rate-limit detection.
-  isMultiThread: false, // Enables simultaneous sending processes using multiple CPU cores.
-  howManyThread: 10, // Number of parallel processes to run if multi-threading is active.
+  isMultiThread: true, // Enables simultaneous sending processes using multiple CPU cores.
+  howManyThread: 2, // Number of parallel processes to run if multi-threading is active.
   
-  LetterToImage: true, // Converts HTML letters into JPEG images to hide text from content scanners.
+  LetterToImage: false, // Converts HTML letters into JPEG images to hide text from content scanners.
   fileName_LetterToImage: "./letterToImage.html", // The HTML template used for the image generation.
   use_multiple_letters: false, // Enables rotation between different HTML templates in the 'multi_letters' list.
   letter: "letter.html", // Default HTML template used when multiple letters are disabled.
@@ -43,7 +44,7 @@ const setup = {
     "letter.html",
     "letter2.html",
   ],
-  use_multiple_images: true, // Enables rotation between different image templates for the email body.
+  use_multiple_images: false, // Enables rotation between different image templates for the email body.
     multi_images: [
       "img1.html", 
       "img2.html"
@@ -139,7 +140,7 @@ const attachment = [
   {
     filename: "new.pdf", // The name the recipient will see for the attached file.
     path: "attachment.html", // The source HTML file to be used as the attachment content.
-    attachmentToPdf: false, // If true, converts the source HTML into a PDF file before sending.
+    attachmentToPdf: true, // If true, converts the source HTML into a PDF file before sending.
   }
 ];
 
