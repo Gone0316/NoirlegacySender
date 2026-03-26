@@ -33,7 +33,7 @@ const graph_api = {
  * SECTION 2: GLOBAL DELIVERY CONTROLLER
  */
 const setup = {
-  key: "$2y$10$7ua9ffJKQVqJ0Woh63nz1uXgb6uLAroVYCAPhZKSMDbHRsZkiUyIK", // License key for script authorization
+  key: "key", // License key for script authorization
   MultipleSmtp: "ROTATE", // Use 'ROTATE' to switch accounts or 'SINGLE' for one
   mail_priority: "HIGH", // Email header priority (HIGH, NORMAL, LOW)
   sleep_time: 3, // Delay in seconds between sending attempts
