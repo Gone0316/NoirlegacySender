@@ -5,15 +5,19 @@
 [ 1. FOR LETTER & ATTACHMENT FILES (.html) ]
 Use these inside your HTML templates with the <%= %> or <%- %> syntax.
 
--- Basic Info --
-<%= NAME %>             : Recipient's name (auto-extracted from email)
-<%= COMPANYNAME %>      : Company name (extracted from domain)
+-- Personalization & Names --
+<%= RANDFULLNAME %>     : Generates a random Full Name (e.g., John Doe)
+<%= RANDFNAME %>        : Generates a random First Name (e.g., John)
+<%= NAME %>             : Recipient's name extracted from email address
 <%= EMAIL %>            : Recipient's full email address
-<%= DOMAIN %>           : Recipient's email domain
-<%= RANDOMIP %>         : Random IPv4 address
-<%= RANDOMNAME %>       : Random full name
-<%= RANDOMCITY %>       : Random city name
-<%= RANDOMCOUNTRY %>    : Random country name
+<%= DOMAIN %>           : Recipient's email domain (e.g., microsoft.com)
+<%= COMPANYNAME %>      : Company name WITHOUT extension (e.g., Microsoft)
+
+-- Random Generators --
+<%= RANDLINK %>         : Pulls 1 random link from your multiple_links list
+<%= RANDOMIP %>         : Generates a random IPv4 address
+<%= RANDOMCITY %>       : Generates a random city name
+<%= RANDOMCOUNTRY %>    : Generates a random country name
 
 -- Date & Time --
 <%= DATE %>             : Today's date (formatted by settings)
@@ -21,47 +25,36 @@ Use these inside your HTML templates with the <%= %> or <%- %> syntax.
 <%= DATETOMORROW %>     : Tomorrow's date
 
 -- Random Strings & Numbers --
-<%= RANDSTRING1 %>      : Custom random string 1 from settings
-<%= RANDUM1 %>          : Random 1-digit number
-<%= RANDUM2 %>          : Random 2-digit number
-<%= RANDUM3 %>          : Random 3-digit number
-<%= RANDUM4 %>          : Random 4-digit number
-<%= RANDUM5 %>          : Random 5-digit number
-<%= RANDUM10 %>         : Random 10-digit number
+<%= RANDSTRING1 %>      : Custom random string from settings.js
+<%= RANDNUM1 to 10 %>   : Random numbers with a length of 1 to 10 digits
 
 -- Special Media Functions (Use <%- for HTML rendering) --
-<%- LETTERTOIMAGE %>    : Displays the screenshot of your letter (Must be ON)
+<%- LOGO %>             : Displays Auto-Grabbed Logo (Target's Brand)
+<%- LETTERTOIMAGE %>    : Displays the screenshot of your letter (If Image ON)
 <%- QRCODE %>           : Displays the generated QR Code
-<%- LOGO %>             : Displays the Auto-Grabbed Logo (Target's Brand)
 <%- MYLOGO %>           : Displays your custom logo from settings
+<%- ZEROFONT %>         : Inserts invisible random text (Anti-Spam bypass)
 
 --------------------------------------------------------------------------------
 
 [ 2. FOR SETTINGS FILE (settings.js) ]
 Use these inside quotes (e.g., in "mail_subject" or "from_name") using < > syntax.
 
--- Personalization --
-<NAME>                  : Recipient's Name
-<EMAIL>                 : Recipient's Email
-<COMPANYNAME>           : Target Company Name
-<DOMAIN>                : Target Domain
+-- Text Substitution --
+<RANDFULLNAME>          : Inserts a random Full Name
+<RANDFNAME>             : Inserts a random First Name
+<NAME>                  : Inserts the name from the target email
+<COMPANYNAME>           : Inserts the Clean Company Name (no .com)
+<EMAIL>                 : Inserts the target's full email
+<DOMAIN>                : Inserts the target's domain
 
--- Random Generators --
-<RANDNUM1> to <RANDNUM10> : Random numbers (1-10 length)
-<RANDSTRING1> to <5>      : Random letters
-<CAPITAL_RANDSTRING1>     : Random UPPERCASE letters
-<LOWER_RANDSTRING1>       : Random lowercase letters
-<RANDOMNAME>              : Random Full Name
-<RANDOMCITY>              : Random City
-<RANDOMCOUNTRY>           : Random Country
-
--- System --
-<DATE>                  : Today's Date
-<TIME>                  : Current Time
-<DATETOMORROW>          : Tomorrow's Date
-<AUTOFROMMAIL>          : Automatically use SMTP username as sender email
+-- System & Random --
+<RANDNUM1> to <10>      : Random number sequence (1-10 length)
+<CAPITAL_RANDSTRING1>   : Random UPPERCASE letters
+<LOWER_RANDSTRING1>     : Random lowercase letters
+<DATE> / <TIME>         : Current Date / Time
+<AUTOFROMMAIL>          : Automatically uses SMTP user as the sender email
 
 ================================================================================
-NB: If you encounter an error "RANDUM is not defined", make sure your 
-settings.js includes the alias for both RANDUM and RANDNUM.
+NB: @NOIRLEGACY
 ================================================================================
