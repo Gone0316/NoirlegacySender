@@ -47,13 +47,29 @@ const setup = {
 
   // --- CONTENT DECEPTION & RENDERING ---
   LetterToImage: false, // Convert HTML email body into an image to bypass filters
-  fileName_LetterToImage: "./letterToImage.html", // HTML source file for image rendering
+  fileName_LetterToImage: "./letterToImage.html", // Default HTML source file for image rendering
+  
+  // NEW: MULTIPLE IMAGE TEMPLATES (For LetterToImage)
+  use_multiple_images: false, // Enable rotation of HTML templates for image rendering
+  multi_images: [ // List of HTML files to rotate for the image conversion process
+    "./letterToImage1.html",
+    "./letterToImage2.html"
+  ],
+
   width_imageLetter: 800, // Resolution width of the rendered browser window
   height_imageLetter: 1000, // Resolution height of the rendered browser window
   width_imageLetter_2: "100%", // Display width of the rendered image in the email
   height_imageLetter_2: "auto", // Display height of the rendered image in the email
-  use_multiple_letters: false, // Randomly pick from a list of HTML templates
+  
   letter: "letter.html", // Default HTML template file
+  
+  // NEW: MULTIPLE LETTER TEMPLATES
+  use_multiple_letters: false, // Enable rotation of email body HTML templates
+  multi_letters: [ // List of HTML email templates to rotate randomly
+    "letter1.html",
+    "letter2.html",
+    "letter3.html"
+  ],
   
   // --- SENDER & SUBJECT ROTATION ---
   use_noreply: false, // Override sender to show a randomized "noreply@domain" address
