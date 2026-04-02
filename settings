@@ -45,7 +45,7 @@ const setup = {
   multi_images: [
     "./letterToImage1.html",
     "./letterToImage2.html",
-    "./letterToImage3.html"
+    
   ],
 
   // =====================================================================
@@ -70,7 +70,6 @@ const setup = {
   from_name: "Test <RANDFULLNAME> - <COMPANYNAME>",
   
   // Test Sender & Reply-To Address
-  from_mail: "contact-<LOWER_RANDSTRING5>@<DOMAIN>", 
   replyTo: "support-<RANDNUM4>@<DOMAIN>", 
   
   // Test Basic Subject
