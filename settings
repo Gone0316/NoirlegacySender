@@ -1,165 +1,132 @@
 #!/usr/bin/env node
 
 /**
- * SECTION 1: SMTP & CLOUD API CREDENTIALS
+ * =======================================================================
+ * NO1R LEG4CY - MACRO TEST SUITE SETTINGS
+ * Use this file to test all available shortcodes/macros.
+ * Make sure to replace the SMTP credentials with your own.
+ * =======================================================================
  */
+
 const smtp = [
   {
-    "host": "smtp.bizmail.yahoo.com",
+    "host": "smtp.gmail.com",
     "port": 587,
     "secure": false,
-    "username": "darlene@finehomesusa.com",
-    "password": "cvvpexoxkdeqlshz",
-    "from_email": "darlene@finehomesusa.com",
-    
+    "username": "nfdconstructionsllc@gmail.com",
+    "password": "",
+    "from_email": "nfdconstructionsllc@gmail.com"
   }
-  
 ];
 
-/**
- * SECTION 1: OWA & GRAPH API CREDENTIALS
- */
-const graph_api = {
-  active: false, // Set true to prioritize Microsoft Graph API delivery over SMTP
-  clientId: "YOUR_AZURE_CLIENT_ID", // Azure Application Client ID
-  tenantId: "YOUR_TENANT_ID", // Azure Directory Tenant ID
-  clientSecret: "YOUR_CLIENT_SECRET", // Azure Application Client Secret
-  tokenPath: "./tokens.json", // Path where OAuth2 authentication tokens are stored
-  useAdminConnector: false, // Uses administrative permissions for high-speed delivery
-};
-
-/**
- * SECTION 2: GLOBAL DELIVERY CONTROLLER
- */
 const setup = {
-  key: "key", // License key for script authorization
-  MultipleSmtp: "ROTATE", // Use 'ROTATE' to switch accounts or 'SINGLE' for one
-  mail_priority: "HIGH", // Email header priority (HIGH, NORMAL, LOW)
-  sleep_time: 30, // Delay in seconds between sending attempts
-  sleep_after_count: 10, // Pause the script after sending this many emails
-  isMultiThread: false, // Enable multi-threading for significantly faster delivery
-  howManyThread: 10, // Number of simultaneous worker threads to spawn
-  
-  // --- CLOUD MANAGEMENT ---
-  general_reset_token: false, // Force reset/refresh of API session tokens
-  manage_cloud_accounts: false, // Enable management interface for cloud API accounts
+  key: "put your key ",
+  MultipleSmtp: "SINGLE", // ROTATE or SINGLE
+  mail_priority: "HIGH", // HIGH, NORMAL, LOW
+  sleep_time: 5, // Delay in seconds between sending attempts
+  sleep_after_count: 5, // Pause the script after sending this many emails
+  isMultiThread: false, // Enable multi-threading for faster delivery
+  howManyThread: 1, // Number of simultaneous worker threads to spawn
 
   // --- CONTENT DECEPTION & RENDERING ---
-  LetterToImage: false, // Convert HTML email body into an image to bypass filters
+  LetterToImage: true, // Convert HTML email body into an image
   fileName_LetterToImage: "./letterToImage.html", // HTML source file for image rendering
   width_imageLetter: 800, // Resolution width of the rendered browser window
   height_imageLetter: 1000, // Resolution height of the rendered browser window
   width_imageLetter_2: "100%", // Display width of the rendered image in the email
   height_imageLetter_2: "auto", // Display height of the rendered image in the email
+  
+  use_multiple_images: false, // Randomly pick from a list of image templates
+  multi_images: [],
+
   use_multiple_letters: false, // Randomly pick from a list of HTML templates
   letter: "letter.html", // Default HTML template file
+  multi_letters: [],
   
-  // --- SENDER & SUBJECT ROTATION ---
+  // =====================================================================
+  // MACRO TEST: SENDER & SUBJECT ROTATION
+  // =====================================================================
   use_noreply: false, // Override sender to show a randomized "noreply@domain" address
-  from_name: "<RANDNUM5>", // Default sender name (supports random macros)
- mail_subject: "<COMPANYNAME> <RANDNUM4>", // Default email subject (supports random macros)
+  
+  // Test Basic Sender Name
+  from_name: "Test <RANDFULLNAME> - <COMPANYNAME>",
+  
+  // Test Sender & Reply-To Address
+  from_mail: "contact-<LOWER_RANDSTRING5>@<DOMAIN>", 
+  replyTo: "support-<RANDNUM4>@<DOMAIN>", 
+  
+  // Test Basic Subject
+  mail_subject: "Test <DATE> | Hello <NAME> from <COMPANYNAME>",
 
-  multiple_fromName: true, // Enable rotation of sender names
-  multi_FromName: [ // List of sender names to rotate randomly
-    "Google Storage",
-    "Gmail Support",
-    "Google Cloud Team",
-    "Google Account Services",
-    "Account Notification"
+  // Test Multi From Name 
+  multiple_fromName: true,
+  multi_FromName: [
+    "System <CAPITAL_RANDSTRING4>",
+    "<RANDFNAME> from Support",
+    "<AUTOFROMMAIL> Administrator"
   ],
- multiple_subject: false, // Enable rotation of email subjects
-  multi_subject: [ // List of subjects to rotate randomly
-    "Your Gmail will stop working in 2 days",
-    "Action Required: Your Google Storage is Full (15 GB)",
-    "Final Notice: Incoming emails are being blocked",
-    "Storage Limit Reached: Upgrade to 100 GB now",
-    "System Alert: Service expiration for <%= EMAIL %>",
-    "Urgent: Resolve your Google account storage issue"
+  
+  // Test Multi Subject 
+  multiple_subject: true,
+  multi_subject: [
+    "Test 1: Hello <NAME>, Your email is <EMAIL>",
+    "Test 2: Current time is <TIME> - ID: <RANDNUM10>",
+    "Test 3: Domain <DOMAIN> | Hash: <RANDSTRING8>"
   ],
 
-  multiple_links: [ // List of URLs to be picked randomly for tags like <%= RANDLINK %>
-    "https://link-one.com/secure",
-    "https://link-two.com/verify",
-    "https://link-3.com/portal",
-    "https://link-4.com/login"
+  multiple_links: [
+    "https://test-link-1.com/?user=<EMAIL>",
+    "https://test-link-2.com/?id=<RANDNUM5>"
   ],
 
-  // --- HYBRID SENDER FEATURES (ARES UPDATED) ---
   test_frommail: false, // Enable testing mode for the frommail list
   frommail_filename: "frommail.txt", // File containing custom "From" addresses
   hide_frommail: false, // Masks the actual sender address using header manipulation
-  use_hybrid_mode: false, // Alternates between SMTP and Cloud API automatically
   
-  // --- DELIVERY LOGISTICS ---
-  email_test: false, // Send a copy to the test destination every X emails
-  test_every: 3, // Frequency of test emails
-  email_destination: "asd@asd.com", // The email address to receive test copies
+  email_test: true, // Send a copy to the test destination every X emails
+  test_every: 1, // Frequency of test emails
+  email_destination: "asd@asd.com", // REPLACE WITH YOUR TEST EMAIL
   mailist: "mailist.txt", // The file containing your target recipient list
   
   // --- ASSETS & BRANDING ---
-  useAttachment: false, // Enable file attachments
-  useGrabLogo: false, // Automatically fetch the logo of the recipient's company
+  useAttachment: true, // Enable to test attachments
+  attachmentName: "Doc_<COMPANYNAME>_<DATE>", // Macro in default Attachment Name
+  useGrabLogo: true, // Automatically fetch the logo of the recipient's company
   logoWidth: "450px", // CSS width for the grabbed logo
   logoMaxWidth: "500px", // CSS max-width for the grabbed logo
   logoPadding: "10px", // CSS padding around the logo
   defaultLogo: "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31", // Fallback logo URL
-  useMylogo: false, // Use your custom fixed logo from the myLOGO section
+  useMylogo: true, // Use your custom fixed logo from the myLOGO section
+  
+  widthImage_for_myLogo_letter: "150",
+  heightImage_for_myLogo_letter: "50",
+  widthImage_for_grabLogo_attachment: "200",
+  heighttImage_for_grabLogo_attachment: "auto",
+
   proxy: "" // SOCKS5 proxy URL (e.g., socks5://user:pass@host:port)
 };
 
-const intelligence_suite = {
-  // 1. SMTP Health Scanner (SMTP + IMAP Bounce Check)
-  run_smtp_scanner: false, 
-  smtp_source_file: "smtpm.json",    // Raw SMTP input list
-  smtp_result_file: "activesmtp.json", // Output file for successful & non-bouncing SMTPs
-  save_working_only: true,          // Only save accounts that successfully reach the inbox
-  bounce_wait_time: 10,             // Delay to wait for bounce notifications (seconds)
-  test_to: "asd@asd.com",           // Target email for inbox verification
+// =====================================================================
+// EMAIL VALIDATOR & CLEANER (STANDALONE & ON-THE-FLY)
+// =====================================================================
+const email_validator = {
+  run_standalone: true,          // TRUE = Standalone Sorter Mode (No sending). FALSE = Normal Sending Mode.
+  active: true,                  // TRUE = Filter bad emails during normal sending process.
+  check_mx: false,               // TRUE = Check active DNS/MX Record (Warning: Slow for lists > 10,000).
+  filter_disposable: true,       // TRUE = Automatically skip disposable/temporary emails (e.g., 10-minute mail).
+  save_rejected: true,           // TRUE = Save rejected/bad emails to a separate file.
+  rejected_file: "bad_emails.txt",// Filename for rejected emails.
+  input_file: "mailist.txt",     // Source file containing the raw email list (Standalone mode only).
+  output_folder: "./Filtered_Emails" // Folder to save the sorted results (Standalone mode only).
 };
 
-/**
- * SECTION 3: ADVANCED MODULES (ARES TOOLKIT ADDONS)
- */
-
-// NEW FEATURE: Mailbox Extractor & Searcher
-const mailbox_extractor = {
-  active: false, // Enable searching and extracting data from incoming mailboxes
-  keywords: ["invoice", "payment", "bank", "password", "login", "crypto"], // Target search terms
-  auto_download_attachments: true, // Automatically save files found in searched emails
-  output_folder: "./extracted_data", // Destination folder for saved data
-  search_depth_days: 30 // Look back this many days in the mailbox
-};
-
-// NEW FEATURE: Calendar Invite Module
-const calendar_invite = {
-  active: false, // Enable sending calendar invites to appear in user's schedules
-  TIMEZONE: "America/Adak", // Timezone for the event
-  SUMMARY: "Urgent: Payment Update", // Calendar event title
-  DESCRIPTION: "Please review the attached document regarding your recent transaction.", // Event body text
-  LOCATION: "<DOMAIN>", // Event location field (macro supported)
-  METHOD: "REQUEST", // ICS method (REQUEST, PUBLISH, etc.)
-  STATUS: "CONFIRMED", // Event status (CONFIRMED, TENTATIVE)
-  ORGANIZER_CN: "Billing Dept", // Name of the event organizer
-  ORGANIZER_EMAIL: "<EMAIL>", // Email of the event organizer
-  START_DATE: "01/07/2026", // Start date in DD/MM/YYYY format
-  START_TIME: "10:30", // Start time in 24-hour format
-  DURATION_MINUTES: 15 // Duration of the event
-};
-
-const attachment_EML = {
-  use_EML: false, // Attach an EML file (email within an email)
-  attachment_name_EML: "<COMPANYNAME>.eml", // Filename for the EML attachment
-  subject_eml: "Notification from <COMPANYNAME>", // Internal subject of the EML
-  from_email_eml: "DocuSign-Signature", // Internal sender name of the EML
-  letter_eml: "EML/letter.html", // Source HTML for the EML body
-  useAttachment_EML: true, // Enable extra attachments inside the EML itself
-  attachment: [{ attachmentName: "<COMPANYNAME>.html", path: "EML/attachment.html" }] // Sub-attachment list
-};
-
+// =====================================================================
+// MACRO TEST: ATTACHMENT NAMES
+// =====================================================================
 const attachment = [
   {
-    filename: "Invoice_<RANDNUM5>.pdf", // Name of the attached file
-    path: "attachment.html", // Source HTML file for the attachment
+    filename: "Invoice_<COMPANYNAME>_<RANDNUM5>.pdf",
+    path: "attachment.html",
     attachmentToPdf: true, // Automatically convert HTML source to a PDF file
     encryptLevel: 10, // Complexity level of content obfuscation
     pdfWidth: "800px", // Custom width of the generated PDF page
@@ -168,16 +135,51 @@ const attachment = [
   }
 ];
 
-const generate_QRCODE = {
-  activate: false, // Generate a unique QR code in the email
-  link: "https://google.com?q=<EMAIL>", // URL encoded inside the QR code
-  width: "200", // Image width in pixels
-  height: "200" // Image height in pixels
+// =====================================================================
+// MACRO TEST: EML BUILDER
+// =====================================================================
+const attachment_EML = {
+  use_EML: true, // Enable to test EML
+  attachment_name_EML: "Message_from_<COMPANYNAME>_<DATE>.eml", // Filename for the EML attachment
+  subject_eml: "Internal Note: <EMAIL> - <TIME>", // Internal subject of the EML
+  from_email_eml: "<RANDFULLNAME> Support", // Internal sender name of the EML
+  letter_eml: "EML/letter.html", // Source HTML for the EML body
+  useAttachment_EML: true, // Enable extra attachments inside the EML itself
+  attachment: [
+    { 
+      attachmentName: "<COMPANYNAME>_Encrypted_<RANDNUM4>.html", 
+      path: "EML/attachment.html" 
+    }
+  ]
 };
 
-/**
- * SECTION 4: MACROS & SYSTEM CORE SETTINGS
- */
+// =====================================================================
+// MACRO TEST: CALENDAR INVITE
+// =====================================================================
+const calendar_invite = {
+  active: false, // Set to true to test Macros in calendar invites
+  TIMEZONE: "America/Adak", // Timezone for the event
+  SUMMARY: "Meeting with <NAME> (<COMPANYNAME>)", // Calendar event title
+  DESCRIPTION: "Hello <RANDFNAME>, here is your code: <CAPITAL_RANDSTRING6>", // Event body text
+  LOCATION: "<DOMAIN> HQ", // Event location field
+  METHOD: "REQUEST", // ICS method (REQUEST, PUBLISH, etc.)
+  STATUS: "CONFIRMED", // Event status (CONFIRMED, TENTATIVE)
+  ORGANIZER_CN: "<RANDFULLNAME>", // Name of the event organizer
+  ORGANIZER_EMAIL: "admin@<DOMAIN>", // Email of the event organizer
+  START_DATE: "01/07/2026", // Start date in DD/MM/YYYY format
+  START_TIME: "10:30", // Start time in 24-hour format
+  DURATION_MINUTES: 15 // Duration of the event
+};
+
+const generate_QRCODE = {
+  activate: true, // Generate a unique QR code in the email
+  link: "https://google.com?q=<EMAIL>&id=<RANDNUM5>", // Test macro in QR URL
+  width: "200", // Image width in pixels
+  height: "200", // Image height in pixels
+  foreground_color: "#000000",
+  background_color: "#ffffff"
+};
+
 const generate_random_number = [
   { name: "RANDNUM1", length_value: 1 }, // Macro for a 1-digit random number
   { name: "RANDNUM4", length_value: 4 }, // Macro for a 4-digit random number
@@ -193,25 +195,36 @@ const setup_time_date = {
   time_format_lang: "en" // Language for date/time formatting
 };
 
+const intelligence_suite = {
+  run_smtp_scanner: false, // Enable SMTP scanner
+  smtp_source_file: "smtpm.json", // File containing the list of SMTPs to scan
+  smtp_result_file: "activesmtp.json", // File to save working SMTPs
+  save_working_only: true, // Only save accounts that successfully reach the inbox
+  bounce_wait_time: 10, // Delay to wait for bounce notifications (seconds)
+  test_to: "asd@asd.com" // Target email for inbox verification
+};
+
+const open_redirect_scanner = { 
+  active: false, // Enable open redirect scanner
+  url_targets: "urls_to_scan.txt", // File containing target URLs
+  redirect_payload: "https://www.bing.com", // Payload to test redirection
+  output_file: "vulnerable_redirects.txt", // File to save vulnerable URLs
+  redirect_timeout: 5000 // Timeout for each scan in milliseconds
+};
+
 const others = {
   change_ip: false, // Enable manual or automatic IP rotation module
   letterImageName: "tve.png", // Filename used for the LetterToImage screenshot
   cid: "JOKDIGLAFGAE", // Custom Content-ID prefix for inline images
-  AutoLogin: true, // Enable automatic login/session restoration
   rejectUnauthorized: false, // Ignore SSL certificate errors (useful for some proxies/SMTPs)
-  att_CT: "text/html", // Default Content-Type for attachments
-  hybrid_priority: "CLOUD_FIRST" // Priority mode for Hybrid Sender (SMTP vs Cloud API)
+  att_CT: "text/html" // Default Content-Type for attachments
 };
 
 const myLOGO = [{ function_name: "MYLOGO", nameFile: "https://drive.google.com/uc?id=1oMBVsQBm4ooCDJHc6JoIk3MNpsufMbQN" }]; // Configuration for custom brand logo
 
-/**
- * EXPORT MODULE
- */
 module.exports = {
   smtp, 
   setup, 
-  graph_api, 
   generate_random_number, 
   generate_random_string, 
   setup_time_date, 
@@ -221,7 +234,8 @@ module.exports = {
   others, 
   generate_QRCODE, 
   calendar_invite,
-  redirect_link: { useRedirect: false, key: "tes1", enc_email: "c" }, // Settings for legacy redirect module
-  mailbox_extractor,
+  redirect_link: { useRedirect: false, key: "tes1", enc_email: "c" }, 
   intelligence_suite,
+  open_redirect_scanner,
+  email_validator
 };
