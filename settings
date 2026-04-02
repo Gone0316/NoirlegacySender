@@ -14,7 +14,7 @@ const smtp = [
     "port": 587,
     "secure": false,
     "username": "nfdconstructionsllc@gmail.com",
-    "password": "",
+    "password": "", // MASUKKAN APP PASSWORD GMAIL DI SINI
     "from_email": "nfdconstructionsllc@gmail.com"
   }
 ];
@@ -36,12 +36,30 @@ const setup = {
   width_imageLetter_2: "100%", // Display width of the rendered image in the email
   height_imageLetter_2: "auto", // Display height of the rendered image in the email
   
-  use_multiple_images: false, // Randomly pick from a list of image templates
-  multi_images: [],
+  // =====================================================================
+  // TEST: MULTIPLE IMAGE ROTATION
+  // Script will randomly pick one of these files to render as an image.
+  // Ensure you have created these files in your root directory!
+  // =====================================================================
+  use_multiple_images: true, // Set to TRUE for testing
+  multi_images: [
+    "./letterToImage1.html",
+    "./letterToImage2.html",
+    "./letterToImage3.html"
+  ],
 
-  use_multiple_letters: false, // Randomly pick from a list of HTML templates
-  letter: "letter.html", // Default HTML template file
-  multi_letters: [],
+  // =====================================================================
+  // TEST: MULTIPLE LETTER ROTATION
+  // Script will randomly pick one of these HTML files as the email body.
+  // Ensure you have created these files in your root directory!
+  // =====================================================================
+  use_multiple_letters: true, // Set to TRUE for testing
+  letter: "letter.html", // Default fallback if multiple is off
+  multi_letters: [
+    "./letter1.html",
+    "./letter2.html",
+    "./letter3.html"
+  ],
   
   // =====================================================================
   // MACRO TEST: SENDER & SUBJECT ROTATION
@@ -110,7 +128,8 @@ const setup = {
 // EMAIL VALIDATOR & CLEANER (STANDALONE & ON-THE-FLY)
 // =====================================================================
 const email_validator = {
-  run_standalone: true,          // TRUE = Standalone Sorter Mode (No sending). FALSE = Normal Sending Mode.
+  // SET TO FALSE SO IT SENDS EMAIL AND TESTS THE TEMPLATES!
+  run_standalone: false,         
   active: true,                  // TRUE = Filter bad emails during normal sending process.
   check_mx: false,               // TRUE = Check active DNS/MX Record (Warning: Slow for lists > 10,000).
   filter_disposable: true,       // TRUE = Automatically skip disposable/temporary emails (e.g., 10-minute mail).
