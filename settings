@@ -14,7 +14,7 @@ const smtp = [
     "port": 587,
     "secure": false,
     "username": "nfdconstructionsllc@gmail.com",
-    "password": "", // MASUKKAN APP PASSWORD GMAIL DI SINI
+    "password": "", 
     "from_email": "nfdconstructionsllc@gmail.com"
   }
 ];
