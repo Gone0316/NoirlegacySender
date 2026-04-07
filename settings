@@ -4,23 +4,12 @@
  * =======================================================================
  * NO1R LEG4CY - MACRO TEST SUITE SETTINGS
  * Use this file to test all available shortcodes/macros.
- * Make sure to replace the SMTP credentials with your own.
+ * Note: SMTP credentials are now managed externally via smtpm.txt
  * =======================================================================
  */
 
-const smtp = [
-   {
-    "host": "smtp.gmail.com",
-    "port": 587,
-    "secure": false,
-    "username": "Jwilson.langara.ca@gmail.com",
-    "password": "",
-    "from_email": "Jwilson.langara.ca@gmail.com"
-  },
-];
-
 const setup = {
-  key: "put key",
+  key: "putkey",
   MultipleSmtp: "SINGLE", // ROTATE or SINGLE
   mail_priority: "HIGH", // HIGH, NORMAL, LOW
   sleep_time: 5, // Delay in seconds between sending attempts
@@ -248,16 +237,15 @@ const others = {
 const myLOGO = [
   { 
     function_name: "MYLOGO", 
-    nameFile: "https://i.ibb.co.com/jkQB9SnQ/2026-04-04-00-54-03.jpg" 
+    nameFile: "https://i.ibb.co.com/2GPq59T/2026-04-04-00-54-03.jpg" 
   },
   { 
     function_name: "MYLOGO2", // This is the tag name for the second image
-    nameFile: "https://i.ibb.co.com/jkQB9SnQ/2026-04-04-00-54-03.jpg" // Replace with the URL or path of the second image
+    nameFile: "https://i.ibb.co.com/2GPq59T/2026-04-04-00-54-03.jpg" // Replace with the URL or path of the second image
   }
 ];
 
 module.exports = {
-  smtp, 
   setup, 
   generate_random_number, 
   generate_random_string, 
