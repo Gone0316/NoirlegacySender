@@ -8,21 +8,30 @@ Use these inside your HTML templates with the <%= %> or <%- %> syntax.
 -- Personalization & Names --
 <%= RANDFULLNAME %>     : Generates a random Full Name (e.g., John Doe)
 <%= RANDFNAME %>        : Generates a random First Name (e.g., John)
+<%= MALENAME %>         : Generates a random Male First Name
+<%= FEMALENAME %>       : Generates a random Female First Name
 <%= NAME %>             : Recipient's name extracted from email address
 <%= EMAIL %>            : Recipient's full email address
+<%= BASE64MAIL %>       : Recipient's email converted to Base64
 <%= DOMAIN %>           : Recipient's email domain (e.g., microsoft.com)
 <%= COMPANYNAME %>      : Company name WITHOUT extension (e.g., Microsoft)
 
--- Random Generators --
-<%= RANDLINK %>         : Pulls 1 random link from your multiple_links list
+-- Random Generators & Anti-Detection --
+<%= RANDLINK %>         : Pulls 1 random link from your multiple_links list 
+                          (Passes through Stealth Open Redirect Pipeline)
 <%= RANDOMIP %>         : Generates a random IPv4 address
 <%= RANDOMCITY %>       : Generates a random city name
 <%= RANDOMCOUNTRY %>    : Generates a random country name
+<%= PHONENUMBER %>      : Generates a random International Phone Number (+1...)
 
 -- Date & Time --
-<%= DATE %>             : Today's date (formatted by settings)
-<%= TIME %>             : Current time (formatted by settings)
+<%= DATE %>             : Today's full date (formatted by settings)
 <%= DATETOMORROW %>     : Tomorrow's date
+<%= TIME %>             : Current time (formatted by settings)
+<%= YEAR %>             : Current 4-digit Year (e.g., 2026)
+<%= MONTH %>            : Current 2-digit Month (e.g., 04)
+<%= DAY %>              : Current 2-digit Day (e.g., 08)
+<%= WEEKDAY %>          : Name of the current day (e.g., Wednesday)
 
 -- Random Strings & Numbers --
 <%= RANDSTRING1 %>      : Custom random string from settings.js
@@ -43,18 +52,24 @@ Use these inside quotes (e.g., in "mail_subject" or "from_name") using < > synta
 -- Text Substitution --
 <RANDFULLNAME>          : Inserts a random Full Name
 <RANDFNAME>             : Inserts a random First Name
+<MALENAME>              : Inserts a random Male First Name
+<FEMALENAME>            : Inserts a random Female First Name
 <NAME>                  : Inserts the name from the target email
 <COMPANYNAME>           : Inserts the Clean Company Name (no .com)
 <EMAIL>                 : Inserts the target's full email
+<BASE64MAIL>            : Inserts the target's email in Base64
 <DOMAIN>                : Inserts the target's domain
 
 -- System & Random --
+<PHONENUMBER>           : Random International Phone Number
+<YEAR> / <MONTH> / <DAY>: Current Year, Month, or Day
+<WEEKDAY>               : Name of the current day
 <RANDNUM1> to <10>      : Random number sequence (1-10 length)
 <CAPITAL_RANDSTRING1>   : Random UPPERCASE letters
 <LOWER_RANDSTRING1>     : Random lowercase letters
 <DATE> / <TIME>         : Current Date / Time
-<AUTOFROMMAIL>          : Automatically uses SMTP user as the sender email
+<AUTOFROMMAIL>          : Automatically uses SMTP user/Frommaillist as sender
 
 ================================================================================
-NB: @NOIRLEGACY
+NB: @NOIRLEGACY | ALL CONSOLE OUTPUTS ENFORCED TO ENGLISH
 ================================================================================
