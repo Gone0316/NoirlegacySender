@@ -58,7 +58,7 @@ const setup = {
   from_name: "Test <RANDFULLNAME> - <COMPANYNAME>",
   
   // Test Sender & Reply-To Address
-  replyTo: "support-<RANDNUM4>@<DOMAIN>", 
+  replyTo: "support@asd.com", 
   
   // Test Basic Subject
   mail_subject: "Test <DATE> | Hello <NAME> from <COMPANYNAME>",
