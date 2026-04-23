@@ -4,71 +4,180 @@
 
 [ 1. FOR LETTER & ATTACHMENT FILES (.html) ]
 Use these inside your HTML templates with the <%= %> or <%- %> syntax.
+(Note: You can also use the new ##MACRO## format directly here)
 
 -- Personalization & Names --
 <%= RANDFULLNAME %>     : Generates a random Full Name (e.g., John Doe)
 <%= RANDFNAME %>        : Generates a random First Name (e.g., John)
 <%= MALENAME %>         : Generates a random Male First Name
 <%= FEMALENAME %>       : Generates a random Female First Name
+<%= FIRSTNAMEMALE %>    : Generates a random Male First Name (Faker Engine)
+<%= FIRSTNAMEFEMALE %>  : Generates a random Female First Name (Faker Engine)
+<%= LASTNAME %>         : Generates a random Last Name
+<%= FAKENAME %>         : Generates a random Fake Name
 <%= NAME %>             : Recipient's name extracted from email address
 <%= EMAIL %>            : Recipient's full email address
+<%= HEX_MAIL %>         : Target's email converted to Hexadecimal
+<%= SECRET_MAIL %>      : Masked email (e.g., jo******@example.com)
+<%= USERNAME %>         : Email username (e.g., Stefan.Stepanov)
+<%= USERNAME1 %>        : First part of username (e.g., Stefan)
+<%= USERNAME2 %>        : Second part of username (e.g., Stepanov)
+<%= USERNAME3 %>        : Third part of username (if any)
+<%= USERNAME0LOW %>     : Username in lowercase
 <%= BASE64MAIL %>       : Recipient's email converted to Base64
+<%= BASE64_MAILDY %>    : Email in Base64 without "=" padding
+<%= BASE64_MAIL1 %>     : Base64 Email (Part 1 of 3) - Anti Spam Bypass
+<%= BASE64_MAIL2 %>     : Base64 Email (Part 2 of 3) - Anti Spam Bypass
+<%= BASE64_MAIL3 %>     : Base64 Email (Part 3 of 3) - Anti Spam Bypass
 <%= DOMAIN %>           : Recipient's email domain (e.g., microsoft.com)
+<%= DOMAIN0 %>          : Domain level 0 (e.g., microsoft)
+<%= DOMAIN0LOW %>       : Domain level 0 in lowercase
+<%= DOMAIN0LOW1 %>      : Domain TLD in lowercase (e.g., com)
+<%= DOMAIN1 %>          : Top-Level Domain / TLD (e.g., com)
 <%= COMPANYNAME %>      : Company name WITHOUT extension (e.g., Microsoft)
 
 -- Random Generators & Anti-Detection --
 <%= RANDLINK %>         : Pulls 1 random link from your multiple_links list 
                           (Passes through Stealth Open Redirect Pipeline)
+<%= BASELINK %>         : Same as RANDLINK
+<%= URCLINK %>          : Same as RANDLINK
+<%= ELINK %>            : Same as RANDLINK
 <%= RANDOMIP %>         : Generates a random IPv4 address
+<%= MACADDRESS %>       : Generates a random MAC Address
+<%= UUID %>             : Generates a random UUID (v4)
+<%= USERAGENT %>        : Generates a random Web Browser User Agent
+<%= BROWSER %>          : Generates a random Browser Name (Chrome, Firefox, etc.)
+<%= OS %>               : Generates a random OS Name (Windows, macOS, etc.)
 <%= RANDOMCITY %>       : Generates a random city name
 <%= RANDOMCOUNTRY %>    : Generates a random country name
+<%= CITYPREFIX %>       : Generates a random City Prefix
+<%= STATE %>            : Generates a random State Name
+<%= STATEABBR %>        : Generates a random State Abbreviation
+<%= POSTCODE %>         : Generates a random Zip / Postal Code
+<%= BUILDINGNUMBER %>   : Generates a random Building Number
+<%= STREETNAME %>       : Generates a random Street Name
+<%= STREETADDRESS %>    : Generates a random Street Address
+<%= ADDRESS %>          : Generates a random Secondary Address
 <%= PHONENUMBER %>      : Generates a random International Phone Number (+1...)
+<%= FREEEMAIL %>        : Generates a random Fake Email Address
+<%= COMPANYEMAIL %>     : Generates a random Fake Corporate Email Address
+<%= FREEEMAILDOMAIN %>  : Generates a random Free Email Domain (gmail.com, etc.)
+<%= USER_NAME %>        : Generates a random Internet Username
+<%= PASSWORD %>         : Generates a random Strong Password
+<%= DOMAINNAME %>       : Generates a random Fake Domain Name
+<%= DOMAINWORD %>       : Generates a random Domain Word
+<%= TLD %>              : Generates a random Top Level Domain
+<%= SLUG %>             : Generates a random URL Slug
+<%= CATCHPHRASE %>      : Generates a random Corporate Catchphrase
+<%= BS %>               : Generates a random Business Statement
+<%= COMPANY %>          : Generates a random Fake Company Name
+<%= COMPANYSUFFIX %>    : Generates a random Company Suffix
+<%= CREDITCARDTYPE %>   : Generates a random Credit Card Issuer
+<%= CREDITCARDNUMBER %> : Generates a random Credit Card Number
+<%= CREDITCARDEXPIRATIONDATESTRING %> : Generates a random Card Expiry Date
+<%= IBAN %>             : Generates a random IBAN
+<%= SAFECOLORNAME %>    : Generates a random Web-Safe Color Name
+<%= COLORNAME %>        : Generates a random Color Name
 
 -- Date & Time --
 <%= DATE %>             : Today's full date (formatted by settings)
 <%= DATETOMORROW %>     : Tomorrow's date
 <%= TIME %>             : Current time (formatted by settings)
 <%= YEAR %>             : Current 4-digit Year (e.g., 2026)
+<%= CURRENT_YEAR %>     : Current 4-digit Year
 <%= MONTH %>            : Current 2-digit Month (e.g., 04)
+<%= CURRENT_MONTH %>    : Current 2-digit Month
 <%= DAY %>              : Current 2-digit Day (e.g., 08)
+<%= CURRENT_DAY %>      : Current 2-digit Day
 <%= WEEKDAY %>          : Name of the current day (e.g., Wednesday)
+<%= TIMEZONE %>         : Generates a random Timezone
+<%= UNIXTIME %>         : Current Unix Timestamp (e.g., 1712211231)
 
 -- Random Strings & Numbers --
-<%= RANDSTRING1 %>      : Custom random string from settings.js
-<%= RANDNUM1 to 10 %>   : Random numbers with a length of 1 to 10 digits
+<%= RANDSTRING1 %>          : Custom random string from settings.js
+<%= RANDNUM1 to 50 %>       : Random numbers sequence (1 to 50 length)
+<%= TEXTNUMRANDOM1 to 50 %> : Random Alphanumeric string (1 to 50 length)
+<%= TEXTRANDOM1 to 50 %>    : Random letters sequence (1 to 50 length)
+
+-- Dynamic Encoders & Shufflers --
+<%= BASE64(text) %>               : Encodes anything inside to Base64
+<%= URLENCODE(text) %>            : URL Encodes anything inside
+<%= TRANSLATE('text', 'en', 'fr') %> : Translates text
+<%= SHUFFLE(Word1|Word2|Word3) %> : Spintax randomly picks one of the words
 
 -- Special Media Functions (Use <%- for HTML rendering) --
 <%- LOGO %>             : Displays Auto-Grabbed Logo (Target's Brand)
+<%- HTMLIMG %>          : Same as LOGO
 <%- LETTERTOIMAGE %>    : Displays the screenshot of your letter (If Image ON)
 <%- QRCODE %>           : Displays the generated QR Code
 <%- MYLOGO %>           : Displays your custom logo from settings
+<%- USERLOGO %>         : Same as MYLOGO
+<%- IMAGE1 %>           : Random Image Tag (From multi_images folder)
 <%- ZEROFONT %>         : Inserts invisible random text (Anti-Spam bypass)
+
+-- Raw Base64 Data Only (Without <img> tags) --
+<%- QRDATA %>           : Raw Base64 String of the QR Code
+<%- HTMLIMGDATA %>      : Raw Base64 String of the Auto-Grabbed Logo
+<%- USERLOGODATA %>     : Raw Base64 String of your Custom Logo
+<%- IMAGEDATA1 %>       : Raw Base64 String of your Custom Logo
 
 --------------------------------------------------------------------------------
 
 [ 2. FOR SETTINGS FILE (settings.js) ]
 Use these inside quotes (e.g., in "mail_subject" or "from_name") using < > syntax.
+(Note: You can also use the new ##MACRO## format directly here)
 
 -- Text Substitution --
 <RANDFULLNAME>          : Inserts a random Full Name
+<FAKENAME>              : Inserts a random Fake Name
 <RANDFNAME>             : Inserts a random First Name
 <MALENAME>              : Inserts a random Male First Name
 <FEMALENAME>            : Inserts a random Female First Name
+<FIRSTNAMEMALE>         : Inserts a random Male First Name (Faker Engine)
+<FIRSTNAMEFEMALE>       : Inserts a random Female First Name (Faker Engine)
+<LASTNAME>              : Inserts a random Last Name
 <NAME>                  : Inserts the name from the target email
 <COMPANYNAME>           : Inserts the Clean Company Name (no .com)
+<COMPANY>               : Inserts a random Fake Company Name
+<COMPANYSUFFIX>         : Inserts a random Company Suffix
 <EMAIL>                 : Inserts the target's full email
+<HEX_MAIL>              : Target's email converted to Hexadecimal
+<SECRET_MAIL>           : Masked email (e.g., jo******@example.com)
+<USERNAME>              : Email username (e.g., john.doe)
+<USERNAME1>             : First part of username (e.g., john)
 <BASE64MAIL>            : Inserts the target's email in Base64
+<BASE64_MAILDY>         : Email in Base64 without "=" padding
+<BASE64_MAIL1>          : Base64 Email (Part 1 of 3)
 <DOMAIN>                : Inserts the target's domain
+<DOMAIN0>               : Target's domain level 0 (e.g., microsoft)
 
 -- System & Random --
 <PHONENUMBER>           : Random International Phone Number
 <YEAR> / <MONTH> / <DAY>: Current Year, Month, or Day
 <WEEKDAY>               : Name of the current day
-<RANDNUM1> to <10>      : Random number sequence (1-10 length)
+<UNIXTIME>              : Current Unix Timestamp
+<RANDOMIP>              : Generates a random IPv4 address
+<MACADDRESS>            : Generates a random MAC Address
+<UUID>                  : Generates a random UUID (v4)
+<USERAGENT>             : Generates a random Web Browser User Agent
+<BROWSER>               : Generates a random Browser Name
+<OS>                    : Generates a random OS Name
+<FREEEMAIL>             : Random Fake Email Address
+<COMPANYEMAIL>          : Random Fake Corporate Email Address
+<FREEEMAILDOMAIN>       : Random Free Email Domain
+<USER_NAME>             : Random Internet Username
+<PASSWORD>              : Random Strong Password
+<DOMAINNAME>            : Random Fake Domain Name
+<CREDITCARDNUMBER>      : Random Credit Card Number
+<IBAN>                  : Random IBAN
+<RANDNUM1> to <50>      : Random number sequence (1-50 length)
+<TEXTNUMRANDOM1> to <50>: Random Alphanumeric string (1-50 length)
+<TEXTRANDOM1> to <50>   : Random letters sequence (1-50 length)
 <CAPITAL_RANDSTRING1>   : Random UPPERCASE letters
 <LOWER_RANDSTRING1>     : Random lowercase letters
 <DATE> / <TIME>         : Current Date / Time
 <AUTOFROMMAIL>          : Automatically uses SMTP user/Frommaillist as sender
+<SHUFFLE(A|B|C)>        : Spintax randomly picks one of the words
 
 ================================================================================
 NB: @NOIRLEGACY | ALL CONSOLE OUTPUTS ENFORCED TO ENGLISH
