@@ -1,0 +1,10 @@
+[
+  {
+    "host": "smtp.gmail.com",
+    "port": 587,
+    "secure": false,
+    "username": "nfdconstructionsllc@gmail.com",
+    "password": "fxmf jsku quff uvim",
+    "from_email": "nfdconstructionsllc@gmail.com"
+  }
+]

@@ -1,1 +1,0 @@
-smtp.gmail.com:587:Jwilson.langara.ca@gmail.com:nrdc kjdz tovc hvxc:Jwilson.langara.ca@gmail.com:false:true
