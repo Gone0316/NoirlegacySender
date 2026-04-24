@@ -1,25 +1,35 @@
 {
-  "name": "noir",
+  "name": "noirlegacy-sender",
   "version": "3.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "NO1R LEG4CY Ultimate Version",
+  "main": "start.js",
   "bin": {
-    "noirlegacy": "big.js"
+    "noirlegacy": "start.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "Noirlegacy": "node start.js",
+    "start": "node start.js",
+    "build": "node new.cjs"
   },
-  "keywords": [],
-  "type": "module",
-  "author": "",
+  "keywords": [
+    "noir",
+    "legacy",
+    "sender"
+  ],
+  "author": "NO1R LEG4CY",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@independentsoft/msg": "^1.0.2",
     "axios": "^0.21.1",
+    "bytenode": "^1.5.7",
+    "canvas": "^2.11.2",
     "cfonts": "^2.9.3",
+    "cheerio": "^1.2.0",
     "colors": "^1.4.0",
     "console-stamp": "^3.0.2",
     "death": "^1.1.0",
+    "docxtemplater": "^3.68.5",
     "ejs": "^3.1.6",
     "email-to-name": "^2.0.2",
     "eml-format": "^0.6.1",
@@ -30,13 +40,19 @@
     "html-to-docx": "^1.8.0",
     "html-to-image": "^1.7.0",
     "hwid": "^0.4.1",
+    "imap": "^0.8.19",
     "inquirer": "^8.1.1",
     "loading-cli": "^1.1.0",
     "locate-chrome": "^0.1.1",
+    "mailparser": "^3.9.6",
     "node-html-to-image": "^3.2.0",
+    "node-machine-id": "^1.1.12",
+    "node-qpdf": "^1.0.3",
     "nodemailer": "^6.10.1",
     "nodemailer-plugin-inline-base64": "^2.1.1",
     "ora": "^5.4.1",
+    "pdf-lib": "^1.17.1",
+    "pizzip": "^3.2.0",
     "puppeteer": "^10.2.0",
     "qrcode": "^1.5.3",
     "random-ipv4": "^1.0.2",
