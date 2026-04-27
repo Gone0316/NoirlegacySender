@@ -1,263 +1,291 @@
-#!/usr/bin/env node
-
 /**
  * =======================================================================
- * NO1R LEG4CY - MACRO TEST SUITE SETTINGS
- * Use this file to test all available shortcodes/macros.
- * Note: SMTP credentials are now managed externally via smtpm.txt
+ * NO1R LEG4CY - ULTIMATE SETTINGS (ENGLISH)
  * =======================================================================
  */
 
 const setup = {
-  key: "putkey",
-  MultipleSmtp: "SINGLE", // ROTATE or SINGLE
-  mail_priority: "HIGH", // HIGH, NORMAL, LOW
-  sleep_time: 5, // Delay in seconds between sending attempts
-  sleep_after_count: 5, // Pause the script after sending this many emails
-  isMultiThread: false, // Enable multi-threading for faster delivery
-  howManyThread: 1, // Number of simultaneous worker threads to spawn
-
-  // --- CONTENT DECEPTION & RENDERING ---
-  LetterToImage: false, // Convert HTML email body into an image
-  fileName_LetterToImage: "./letterToImage.html", // HTML source file for image rendering
-  width_imageLetter: 800, // Resolution width of the rendered browser window
-  height_imageLetter: 1000, // Resolution height of the rendered browser window
-  width_imageLetter_2: "100%", // Display width of the rendered image in the email
-  height_imageLetter_2: "auto", // Display height of the rendered image in the email
+  // [ API & CONNECTION ]
+  key: "putyourkey", // Your API License Key for authentication.
+  MultipleSmtp: "ROTATE", // "ROTATE": Use all SMTPs in smtpm.json one by one | "SINGLE": Only use the first one.
   
   // =====================================================================
-  // TEST: MULTIPLE IMAGE ROTATION
-  // Script will randomly pick one of these files to render as an image.
-  // Ensure you have created these files in your root directory!
+  // [ EMAIL VISUAL UI SETTINGS ] - Changes how the email looks in the Inbox
   // =====================================================================
-  use_multiple_images: false, // Set to TRUE for testing
-  multi_images: [
-    "./letterToImage1.html",
-    "./letterToImage2.html",
-  ],
+  mail_priority: "HIGH",        // "HIGH": Adds a red exclamation mark (!) | "NORMAL": Standard email.
+  use_flagged: false,           // TRUE: Adds a red flag (Follow up icon) to the email in Outlook.
+  use_confidential: false,      // TRUE: Shows a "Please treat this as Confidential" banner inside the email.
+  use_encryption: false,        // TRUE: Forces the server to show the "Encrypted Padlock" logo (AIP).
+  
+  // [ SPEED & COOLDOWN ] - Controls the sending speed to avoid getting banned
+  sleep_time: 5,                // Wait time (in seconds) during cooldown.
+  sleep_after_count: 5,         // Number of emails to send before triggering the cooldown.
+  speed_delay: 1,               // Delay (in milliseconds) between each email injection.
+  isMultiThread: true,          // TRUE: Enables blazing fast multi-worker/thread sending.
+  howManyThread: 10,            // Number of parallel threads (Recommended: 5 to 15).
+
+  // [ ERROR HANDLING ]
+  save_failed_emails: true,     // TRUE: Automatically saves dead/bounced emails to a text file.
+  failed_folder: "./Failed_Emails", // Folder name to store the failed emails.
 
   // =====================================================================
-  // TEST: MULTIPLE LETTER ROTATION
-  // Script will randomly pick one of these HTML files as the email body.
-  // Ensure you have created these files in your root directory!
+  // [ 1. DYNAMIC AI REWRITER ] - Uses AI to bypass spam filters
   // =====================================================================
-  use_multiple_letters: false, // Set to TRUE for testing
-  letter: "letter.html", // Default fallback if multiple is off
-  multi_letters: [
-    "./letter1.html",
-    "./letter2.html",
-    "./letter3.html"
-  ],
-  
-  // =====================================================================
-  // MACRO TEST: SENDER & SUBJECT ROTATION
-  // =====================================================================
-  use_noreply: false, // Override sender to show a randomized "noreply@domain" address
-  
-  // Test Basic Sender Name
-  from_name: "Test <RANDFULLNAME> - <COMPANYNAME>",
-  
-  // Test Sender & Reply-To Address
-  replyTo: "support@asd.com", 
-  
-  // Test Basic Subject
-  mail_subject: "Test <DATE> | Hello <NAME> from <COMPANYNAME>",
+  ai_rewriter: {
+    active: false,              // TRUE: AI will rewrite the email content differently for every recipient.
+    provider: "Default Gemini API Key",         // AI Provider (Currently supports 'openai').
+    api_key: "AIzaSyDCvFc6SOTwXtHW-ntG_uB4r06iBdqSwsM", // Your OpenAI API Key.
+    model: "gen-lang-client-0240286922",       // The AI model to use (gpt-4o-mini is fast and cheap).
+    prompt: "Rewrite this email to make it sound highly professional and completely human. Keep all the HTML tags and macros like <NAME> or <EMAIL> exactly as they are. Do not add any greeting if it doesn't exist."
+  },
 
-  // Test Multi From Name 
-  multiple_fromName: true,
+  // =====================================================================
+  // [ 2. SMTP WARM-UP MODE ] - Builds IP reputation for new SMTPs
+  // =====================================================================
+  smtp_warmup: {
+    run_warmup: false,          // TRUE: Bot will NOT send to targets. Your SMTPs will email each other to build trust.
+    emails_per_account: 5,      // How many warmup emails each account should send.
+    delay_between_sends: 10     // Delay in seconds between warmup emails.
+  },
+
+  // [ HTML TO IMAGE CONVERTER ] - Sends the email as a secure image
+  use_image_only: false,        // TRUE: Sends a raw image file instead of HTML content.
+  image_folder: "./images",     // Directory where your raw images are stored.
+  LetterToImage: true,          // TRUE: Captures a screenshot of your HTML letter and sends it as an image.
+  fileName_LetterToImage: "./letterToImage.html", // The HTML file you want to screenshot.
+  width_imageLetter: 800,       // Screenshot width.
+  height_imageLetter: 1000,     // Screenshot height.
+  width_imageLetter_2: "100%",  // Visual width of the image inside the email body.
+  height_imageLetter_2: "auto", // Visual height of the image inside the email body.
+  
+  // [ RANDOMIZERS ]
+  use_multiple_images: false,   // TRUE: Randomly picks HTML templates to screenshot.
+  multi_images: ["./img1.html", "./img2.html"], // List of HTML files for random screenshots.
+
+  use_multiple_letters: false,  // TRUE: Randomly picks standard HTML letters.
+  letter: "letter.html",        // Default HTML letter if randomization is OFF.
+  multi_letters: ["./letter1.html", "./letter2.html"],
+  
+  // [ SENDER SPOOFING ]
+  use_noreply: false,           // TRUE: Changes the sender email to a random format (e.g., noreply@domain).
+  test_frommail: false,         // TRUE: Uses custom sender emails from a file.
+  frommail_filename: "frommail.txt", // The file containing custom sender emails.
+  hide_frommail: false,         // TRUE: Attempts to mask/hide your actual sending email address.
+  
+  // [ HEADERS & MACROS ] - Use <MACRO> tags in these strings
+  from_name: "<FAKENAME> - <COMPANYNAME>", // The "From" Name seen by the recipient.
+  replyTo: "no-reply-update@<DOMAIN>",     // The address used if the recipient clicks "Reply".
+  mail_subject: "Action Required: <COMPANYNAME> Account Notice - <DATE>", // Default Email Subject.
+
+  multiple_fromName: true,      // TRUE: Randomizes the "From" Name using the list below.
   multi_FromName: [
     "System <CAPITAL_RANDSTRING4>",
     "<RANDFNAME> from Support",
-    "<AUTOFROMMAIL> Administrator"
+    "<COMPANYNAME> Administrator"
   ],
   
-  // Test Multi Subject 
-  multiple_subject: true,
+  multiple_subject: true,       // TRUE: Randomizes the Subject using the list below.
   multi_subject: [
-    "Test 1: Hello <NAME>, Your email is <EMAIL>",
-    "Test 2: Current time is <TIME> - ID: <RANDNUM10>",
-    "Test 3: Domain <DOMAIN> | Hash: <RANDSTRING8>"
+    "Security Alert: Sign-in detected for <EMAIL>",
+    "Update Required: <COMPANYNAME> terms of service",
+    "##SHUFFLE(Verified|Approved|Secured)##: Your request id <RANDNUM8>"
   ],
 
-  multiple_links: [
-    "https://test-link-1.com/?user=<EMAIL>",
-    "https://test-link-2.com/?id=<RANDNUM5>"
+  multiple_links: [             // List of your redirect/phishing links. Called using <RANDLINK> in HTML.
+    "https://www.google.com"
   ],
+  
+  // [ DELIVERABILITY TESTING ]
+  email_test: false,            // TRUE: Automatically sends a test email to yourself to check inbox rate.
+  test_every: 1,                // Sends a test email every X successful sends.
+  email_destination: "asd@asd.com", // Your personal email address for testing.
+  mailist: "mailist.txt",       // Your main target leads file.
+  
+  // [ ATTACHMENTS ]
+  useAttachment: true,          // TRUE: Enables sending files (PDF/DOCX/Excel).
+  attachmentName: "Doc_<COMPANYNAME>_<DATE>", // Default name for your attachments.
+  
+  // =====================================================================
+  // [ 3. ATTACHMENT RANDOMIZER ] - Bypasses attachment spam filters
+  // =====================================================================
+  randomize_attachment: true,   // TRUE: Randomly sends different file types (PDF, DOCX, XLSX).
+  attachment_weights: {
+    pdf: 40,                    // 40% chance the target receives a PDF.
+    docx: 30,                   // 30% chance the target receives a DOCX.
+    xlsx: 30                    // 30% chance the target receives an XLSX (Excel).
+  },
 
-  test_frommail: false, // Enable testing mode for the frommail list
-  frommail_filename: "frommail.txt", // File containing custom "From" addresses
-  hide_frommail: false, // Masks the actual sender address using header manipulation
-  
-  email_test: false, // Send a copy to the test destination every X emails
-  test_every: 1, // Frequency of test emails
-  email_destination: "asd@asd.com", // REPLACE WITH YOUR TEST EMAIL
-  mailist: "mailist.txt", // The file containing your target recipient list
-  
-  // --- ASSETS & BRANDING ---
-  useAttachment: true, // Enable to test attachments
-  attachmentName: "Doc_<COMPANYNAME>_<DATE>", // Macro in default Attachment Name
-  useGrabLogo: true, // Automatically fetch the logo of the recipient's company
-  logoWidth: "450px", // CSS width for the grabbed logo
-  logoMaxWidth: "500px", // CSS max-width for the grabbed logo
-  logoPadding: "10px", // CSS padding around the logo
-  defaultLogo: "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31", // Fallback logo URL
-  useMylogo: true, // Use your custom fixed logo from the myLOGO section
-  
+  // [ LOGO GRABBERS ]
+  useGrabLogo: false,           // TRUE: Automatically fetches the target company's real logo from the internet.
+  logoWidth: "450px",           // Width of the fetched logo.
+  useMylogo: false,             // TRUE: Embeds custom static logos defined in the myLOGO array below.
   widthImage_for_myLogo_letter: "150",
-  heightImage_for_myLogo_letter: "50",
-  widthImage_for_grabLogo_attachment: "200",
-  heighttImage_for_grabLogo_attachment: "auto",
+  heightImage_for_myLogo_letter: "auto",
+  
+  proxy: "",                    // Proxy settings (e.g., socks5://user:pass@host:port). Leave empty for none.
 
-  proxy: "" // SOCKS5 proxy URL (e.g., socks5://user:pass@host:port)
+  // [ IMAP STANDALONE EXTRACTOR ]
+  standalone_extractor: {
+    run_standalone: false,      // TRUE: Scrapes emails from an inbox instead of blasting.
+    email: "your.email@gmail.com", // Inbox to scrape.
+    password: "pass",           // Inbox password/App password.
+    host: "imap.gmail.com",     // IMAP Host.
+    port: 993,              
+    tls: true,              
+    output_file: "extracted_emails.txt" // Where to save scraped emails.
+  },
+
+  // [ BROWSER AUTOMATION SENDER ]
+  standalone_sender: {
+    run_standalone: false,      // TRUE: Sends via real browser (Puppeteer) instead of SMTP.
+    use_browser_automation: false,  
+    email: "clivelindley@fsplatinum.com", // Webmail login email.
+    password: "pass",           // Webmail login password.
+    target_file: "mailist.txt",    
+    subject: "Inquiry regarding <COMPANYNAME>", 
+    letter_file: "letter.html",    
+    delay_min: 30,              // Minimum delay between browser sends (seconds).
+    delay_max: 90               // Maximum delay between browser sends (seconds).
+  },
 };
 
 // =====================================================================
-// EMAIL VALIDATOR & CLEANER (STANDALONE & ON-THE-FLY)
+// [ EMAIL VALIDATOR MODULE ]
 // =====================================================================
 const email_validator = {
-  // SET TO FALSE SO IT SENDS EMAIL AND TESTS THE TEMPLATES!
-  run_standalone: false,         
-  active: true,                  // TRUE = Filter bad emails during normal sending process.
-  check_mx: false,               // TRUE = Check active DNS/MX Record (Warning: Slow for lists > 10,000).
-  filter_disposable: true,       // TRUE = Automatically skip disposable/temporary emails (e.g., 10-minute mail).
-  save_rejected: true,           // TRUE = Save rejected/bad emails to a separate file.
-  rejected_file: "bad_emails.txt",// Filename for rejected emails.
-  input_file: "mailist.txt",     // Source file containing the raw email list (Standalone mode only).
-  output_folder: "./Filtered_Emails" // Folder to save the sorted results (Standalone mode only).
+  run_standalone: false,        // TRUE: Cleans your mailist.txt. Script will NOT blast emails.
+  active: false,                // TRUE: Checks if the email is valid before sending.
+  check_mx: false,              // TRUE: Deep DNS check for active mail servers.
+  filter_disposable: true,      // TRUE: Removes trash emails (mailinator, yopmail, etc.).
+  save_rejected: true,          // TRUE: Saves dead emails to a separate file.
+  rejected_file: "bad_emails.txt",
+  input_file: "mailist.txt",    
+  output_folder: "./Filtered_Emails" 
 };
 
 // =====================================================================
-// MACRO TEST: ATTACHMENT NAMES
+// [ ATTACHMENT SETTINGS (PDF/DOCX/EXCEL HYBRID) ]
 // =====================================================================
+// Note: If randomize_attachment is TRUE above, it overrides these true/false flags.
 const attachment = [
   {
-    filename: "Invoice_<COMPANYNAME>_<RANDNUM5>.docx",
-    path: "attachment.html",
-    attachmentToPdf: false, // Automatically convert HTML source to a PDF file
-    attachmentToDocx: true, // Enable this to convert HTML source to a DOCX file
-    encryptLevel: 10, // Complexity level of content obfuscation
-    pdfWidth: "800px", // Custom width of the generated PDF page
-    pdfHeight: "1100px", // Custom height of the generated PDF page
-    injectBinaryNoise: false, // Modifies file hash on every send to prevent signature detection
+    filename: "Secure_Document_<COMPANYNAME>_<RANDNUM5>.xlsx", // Name of the attachment file
+    path: "attachment.html",     // The HTML file used to build the attachment
+    attachmentToPdf: false,      // Convert path HTML to PDF
+    attachmentToDocx: false,     // Convert path HTML to DOCX
+    attachmentToXlsx: true,      // Convert path HTML to EXCEL (Hybrid Image + Data)
+    
+    // --- EXCEL HYBRID IMAGE SETTINGS ---
+    excelImageWidth: 400,        // Width of the screenshot pasted inside Excel.
+    excelImageHeight: 200,       // Height of the screenshot pasted inside Excel.
+    excelImageRow: 5,            // Row position for the image (0-indexed, 5 = Row 6).
+    excelImageCol: 0,            // Column position for the image (0 = Column A).
+    
+    encryptLevel: 10,
+    pdfWidth: "800px", 
+    pdfHeight: "1100px", 
+    injectBinaryNoise: false,    // Inserts random invisible bytes to bypass hash filters.
   }
 ];
 
 // =====================================================================
-// MACRO TEST: EML BUILDER
+// [ EML (EMAIL MESSAGE) ATTACHMENT MODULE ]
 // =====================================================================
 const attachment_EML = {
-  use_EML: true, // Enable to test EML
-  attachment_name_EML: "Message_from_<COMPANYNAME>_<DATE>.eml", // Filename for the EML attachment
-  subject_eml: "Internal Note: <EMAIL> - <TIME>", // Internal subject of the EML
-  from_email_eml: "<RANDFULLNAME> Support", // Internal sender name of the EML
-  letter_eml: "EML/letter.html", // Source HTML for the EML body
-  useAttachment_EML: true, // Enable extra attachments inside the EML itself
-  attachment: [
-    { 
-      attachmentName: "<COMPANYNAME>_Encrypted_<RANDNUM4>.docx", 
-      path: "EML/attachment.html",
-      attachmentToDocx: true
-    }
-  ]
+  use_EML: false,                // TRUE: Attaches a fake .eml file inside the main email.
+  attachment_name_EML: "Message.eml", 
+  subject_eml: "Internal Note", 
+  from_email_eml: "<RANDFULLNAME> Support", 
+  letter_eml: "EML/letter.html", 
+  useAttachment_EML: false,      // TRUE: Puts an attachment INSIDE the EML file itself.
+  attachment: []
 };
 
-const calendar_invite = {
-  active: true, // MUST BE TRUE TO ENABLE
+// =====================================================================
+// [ CALENDAR (.ICS) EVENT MODULE ]
+// =====================================================================
+const calendar_invite = { 
+  active: false,                 // TRUE: Attaches a calendar meeting invite to bypass filters.
   TIMEZONE: "America/New_York", 
-  SUMMARY: "Urgent Security Verification for <NAME>", // Event Title
-  DESCRIPTION: "Dear <NAME>,\n\nAs part of our ongoing security enhancements, we require all users to complete a mandatory account verification session.\n\nYour temporary session code is: <CAPITAL_RANDSTRING6>\n\nPlease proceed to the portal to finalize the process and prevent account suspension:\n<RANDLINK>\n\nThank you for your immediate attention to this matter.\n\nIT Security Department", 
+  SUMMARY: "Urgent Security Verification for <NAME>", 
+  DESCRIPTION: "Dear <NAME>,\n\nPlease verify your account.\n<RANDLINK>", 
   LOCATION: "Digital Identity Protection Portal",
-  METHOD: "REQUEST", // This will trigger the RSVP buttons (Accept/Decline)
+  METHOD: "REQUEST", 
   STATUS: "CONFIRMED",
-  ORGANIZER_CN: "Corporate Security Office", // Sender display name in calendar
-  ORGANIZER_EMAIL: "no-reply-security@<DOMAIN>", // Sender email in calendar
+  ORGANIZER_CN: "Corporate Security Office", 
+  ORGANIZER_EMAIL: "no-reply-security@<DOMAIN>", 
   ATTENDEE_CN: "<NAME>", 
   ATTENDEE_EMAIL: "<EMAIL>",
-  RSVP: true, // Enables the buttons in Outlook/Gmail
-  START_DATE: "05/04/2026", // DD/MM/YYYY format
-  START_TIME: "10:00", // 24-hour format
+  RSVP: true, 
+  START_DATE: "05/04/2026", 
+  START_TIME: "10:00", 
   DURATION_MINUTES: 15,
   REMINDER_MINUTES: 10,
   REMINDER_TEXT: "Mandatory Security Verification Session"
 };
 
+// =====================================================================
+// [ DYNAMIC QR CODE GENERATOR ]
+// =====================================================================
 const generate_QRCODE = {
-  activate: true, // Generate a unique QR code in the email
-  link: "https://google.com?q=<EMAIL>&id=<RANDNUM5>", // Test macro in QR URL
-  width: "200", // Image width in pixels
-  height: "200", // Image height in pixels
-  foreground_color: "#000000",
+  activate: false,               // TRUE: Generates a unique QR Code embedded with your link.
+  link: "https://google.com?q=<EMAIL>&id=<RANDNUM5>", 
+  width: "200", 
+  height: "200", 
+  foreground_color: "#000000", 
   background_color: "#ffffff"
 };
 
-const generate_random_number = [
-  { name: "RANDNUM1", length_value: 1 }, // Macro for a 1-digit random number
-  { name: "RANDNUM4", length_value: 4 }, // Macro for a 4-digit random number
-  { name: "RANDNUM5", length_value: 5 }  // Macro for a 5-digit random number
-];
-
-const generate_random_string = [
-  { name: "RANDSTRING1", length_value: 5, type: "UPPERCASE" } // Macro for a 5-letter uppercase string
-];
-
-const setup_time_date = {
-  time_zone: "America/Adak", // Global timezone for date macros
-  time_format_lang: "en" // Language for date/time formatting
-};
-
+// =====================================================================
+// [ SMTP HEALTH SCANNER ]
+// =====================================================================
 const intelligence_suite = {
-  run_smtp_scanner: false, // Enable SMTP scanner
-  smtp_source_file: "smtpm.json", // File containing the list of SMTPs to scan
-  smtp_result_file: "activesmtp.json", // File to save working SMTPs
-  save_working_only: true, // Only save accounts that successfully reach the inbox
-  bounce_wait_time: 10, // Delay to wait for bounce notifications (seconds)
-  test_to: "asd@asd.com" // Target email for inbox verification
+  run_smtp_scanner: false,       // TRUE: Checks if SMTPs are dead or alive without blasting.
+  smtp_source_file: "smtpm.json", 
+  smtp_result_file: "activesmtp.json", 
 };
 
+// =====================================================================
+// [ OPEN REDIRECT URL SCANNER & DORKER ]
+// =====================================================================
 const open_redirect_scanner = { 
-  active: false, // Enable open redirect scanner
-  url_targets: "urls_to_scan.txt", // File containing target URLs
-  redirect_payload: "https://www.bing.com", // Payload to test redirection
-  output_file: "vulnerable_redirects.txt", // File to save vulnerable URLs
-  redirect_timeout: 5000 // Timeout for each scan in milliseconds
+  active: false,                 // TRUE: Scans domains to find open redirect vulnerabilities.
+  auto_dorking: true,            // TRUE: Scrapes search engines for targets automatically.
+  dork_file: "dorks.txt",        // Keywords file for scraping.
+  url_targets: "urls_to_scan.txt", // Target file for scanning.
+  payloads: ["https://www.google.com"], // Your link to test the vulnerability.
+  output_file: "vulnerable_redirects.txt", 
+  redirect_timeout: 5000 
 };
 
+// =====================================================================
+// [ MISCELLANEOUS / INTERNAL HEADERS ]
+// =====================================================================
 const others = {
-  change_ip: false, // Enable manual or automatic IP rotation module
-  letterImageName: "tve.png", // Filename used for the LetterToImage screenshot
-  cid: "JOKDIGLAFGAE", // Custom Content-ID prefix for inline images
-  rejectUnauthorized: false, // Ignore SSL certificate errors (useful for some proxies/SMTPs)
-  att_CT: "text/html" // Default Content-Type for attachments
+  change_ip: false,              // TRUE: Change your registered IP in the license database.
+  letterImageName: "tve.png", 
+  cid: "JOKDIGLAFGAE",           // Content-ID prefix to attach images internally.
+  rejectUnauthorized: false,     // Skips strict SSL certificate checking.
+  att_CT: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" // MIME Type for Excel. DO NOT change if using Excel.
 };
 
-// =====================================================================
-// CUSTOM INLINE IMAGES CONFIGURATION
-// You can add multiple images here and call them via tags (e.g., <%- MYLOGO %>, <%- MYLOGO2 %>)
-// =====================================================================
-const myLOGO = [
-  { 
-    function_name: "MYLOGO", 
-    nameFile: "https://i.ibb.co.com/2GPq59T/2026-04-04-00-54-03.jpg" 
-  },
-  { 
-    function_name: "MYLOGO2", // This is the tag name for the second image
-    nameFile: "https://i.ibb.co.com/2GPq59T/2026-04-04-00-54-03.jpg" // Replace with the URL or path of the second image
-  }
+// Array of custom logos to insert into the email body.
+const myLOGO = [];
+
+// Big.js native randomizers setup.
+const generate_random_number = [
+  { name: "RANDNUM1", length_value: 1 },
+  { name: "RANDNUM4", length_value: 4 },
+  { name: "RANDNUM5", length_value: 5 }
 ];
+const generate_random_string = [
+  { name: "RANDSTRING1", length_value: 5, type: "UPPERCASE" }
+];
+const setup_time_date = { time_zone: "America/Adak", time_format_lang: "en" };
 
 module.exports = {
-  setup, 
-  generate_random_number, 
-  generate_random_string, 
-  setup_time_date, 
-  attachment, 
-  myLOGO, 
-  attachment_EML, 
-  others, 
-  generate_QRCODE, 
-  calendar_invite,
+  setup, generate_random_number, generate_random_string, setup_time_date, 
+  attachment, myLOGO, attachment_EML, others, generate_QRCODE, calendar_invite,
   redirect_link: { useRedirect: false, key: "tes1", enc_email: "c" }, 
-  intelligence_suite,
-  open_redirect_scanner,
-  email_validator
+  intelligence_suite, open_redirect_scanner, email_validator
 };
